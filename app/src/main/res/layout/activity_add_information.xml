@@ -7,6 +7,34 @@
     android:orientation="vertical"
     tools:context=".AddInformationActivity">
 
+    <TextView
+        android:text="员工选择的下拉菜单"
+        android:textSize="32sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
+    <TextView
+        android:text="款式选择下拉菜单"
+        android:textSize="32sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="款式对应的工序数量"
+        android:textSize="32sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="工序对应的数量"
+        android:textSize="32sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="添加按钮 添加完成后 重置工序和件数"
+        android:textSize="32sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
