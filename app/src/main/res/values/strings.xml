@@ -5,10 +5,13 @@
     <string name="add_information">添加信息</string>
     <string name="salary_list">工资列表</string>
     <string name="check_salary">检查工资</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="employee">员工</string>
     <string name="style">款式</string>
+
+    <string name="add_employee">员工</string>
+    <string name="add_style">款式</string>
+    <string name="add_process">工序</string>
+    <string name="add_circuit">流程</string>
 
 </resources>

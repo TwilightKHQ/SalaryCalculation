@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation;
+package com.twilightkhq.salarycalculation.InformationList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,8 +8,7 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.twilightkhq.salarycalculation.Adapter.AdapterFragment;
-import com.twilightkhq.salarycalculation.InformationList.FragmentEmployee;
-import com.twilightkhq.salarycalculation.InformationList.FragmentStyle;
+import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
 import java.util.List;

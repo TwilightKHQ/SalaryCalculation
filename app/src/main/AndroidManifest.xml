@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".CheckSalaryActivity" />
         <activity android:name=".SalaryListActivity" />
-        <activity android:name=".AddInformationActivity" />
-        <activity android:name=".InformationListActivity" />
+        <activity android:name=".AddInformation.AddInformationActivity" />
+        <activity android:name=".InformationList.InformationListActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

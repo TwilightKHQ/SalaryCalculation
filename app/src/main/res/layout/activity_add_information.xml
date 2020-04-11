@@ -5,36 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AddInformationActivity">
+    tools:context=".AddInformation.AddInformationActivity">
 
-    <TextView
-        android:text="员工选择的下拉菜单"
-        android:textSize="32sp"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp"/>
 
-    <TextView
-        android:text="款式选择下拉菜单"
-        android:textSize="32sp"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="款式对应的工序数量"
-        android:textSize="32sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="工序对应的数量"
-        android:textSize="32sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="添加按钮 添加完成后 重置工序和件数"
-        android:textSize="32sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
