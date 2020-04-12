@@ -11,10 +11,20 @@
         android:layout_height="wrap_content"
         android:text="选择款式" />
 
+    <Spinner
+        android:id="@+id/spinner_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="选择工序" />
+
+    <Spinner
+        android:id="@+id/spinner_process_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
@@ -22,7 +32,19 @@
         android:text="单价" />
 
     <EditText
-        android:id="@+id/edit_text"
+        android:id="@+id/edit_process_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入该工序的单价"
+        android:inputType="number" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="件数" />
+
+    <EditText
+        android:id="@+id/edit_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入该工序的单件价格"

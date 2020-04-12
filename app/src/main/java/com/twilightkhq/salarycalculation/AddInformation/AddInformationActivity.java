@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.material.tabs.TabLayout;
 import com.twilightkhq.salarycalculation.Adapter.AdapterFragment;
@@ -81,17 +82,6 @@ public class AddInformationActivity extends AppCompatActivity {
                     Log.d(TAG, "onClick: currentViewPagePosition " + currentViewPagePosition);
                 }
                 insertData(currentViewPagePosition);
-//                switch (currentViewPagePosition) {
-//                    case 0:
-//                        insertEmployee();
-//                        break;
-//                    case 1:
-//                        break;
-//                    case 2:
-//                        break;
-//                    case 3:
-//                        break;
-//                }
             }
         });
     }
@@ -106,6 +96,9 @@ public class AddInformationActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         View fragmentView = adapterFragment.getItem(type).getView();
         if (fragmentView != null) {
+            Spinner spinnerStyle;
+            Spinner spinnerProcessID;
+            EditText editNumber;
             switch (type) {
                 case 0:
                     EditText editEmployee = (EditText) fragmentView.findViewById(R.id.edit_employee);
@@ -115,42 +108,52 @@ public class AddInformationActivity extends AppCompatActivity {
                     break;
                 case 1:
                     EditText editStyle = (EditText) fragmentView.findViewById(R.id.edit_style);
-                    EditText editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
+                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
                     EditText editStylePrice = (EditText) fragmentView.findViewById(R.id.edit_style_price);
                     EditText editProcessNumber = (EditText) fragmentView.findViewById(R.id.edit_process_number);
                     contentValues.put("style", editStyle.getText().toString());
                     contentValues.put("number", Integer.valueOf(editNumber.getText().toString()));
-                    contentValues.put("style_price", Integer.valueOf(editStylePrice.getText().toString()));
+                    contentValues.put("style_price", handlePrice(editStylePrice.getText().toString()));
                     contentValues.put("process_number", Integer.valueOf(editProcessNumber.getText().toString()));
+                    database.insert("style", null, contentValues);
                     editStyle.setText("");
                     editNumber.setText("");
                     editStylePrice.setText("");
                     editProcessNumber.setText("");
                     break;
                 case 2:
+                    spinnerStyle = (Spinner) fragmentView.findViewById(R.id.spinner_style);
+                    spinnerProcessID = (Spinner) fragmentView.findViewById(R.id.spinner_process_id);
+                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
+                    EditText editProcessPrice = (EditText) fragmentView.findViewById(R.id.edit_process_price);
+                    contentValues.put("style", spinnerStyle.getSelectedItem().toString());
+                    contentValues.put("process_id", spinnerProcessID.getSelectedItem().toString());
+                    contentValues.put("process_price", handlePrice(editProcessPrice.getText().toString()));
+                    contentValues.put("number", Integer.valueOf(editNumber.getText().toString()) );
+                    database.insert("process", null, contentValues);
+                    editNumber.setText("");
+                    editProcessPrice.setText("");
                     break;
                 case 3:
+                    Spinner spinnerEmployee = (Spinner) fragmentView.findViewById(R.id.spinner_employee);
+                    spinnerStyle = (Spinner) fragmentView.findViewById(R.id.spinner_style);
+                    spinnerProcessID = (Spinner) fragmentView.findViewById(R.id.spinner_process_id);
+                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
+                    contentValues.put("employee", spinnerEmployee.getSelectedItem().toString());
+                    contentValues.put("style", spinnerStyle.getSelectedItem().toString());
+                    contentValues.put("process_id", spinnerProcessID.getSelectedItem().toString());
+                    contentValues.put("number", Integer.valueOf(editNumber.getText().toString()) );
+                    database.insert("circuit", null, contentValues);
+                    editNumber.setText("");
                     break;
-
             }
         }
         database.close();
     }
 
-//    private void insertEmployee() {
-//        EditText editEmployee = (EditText) adapterFragment.getItem(0)
-//                .getView().findViewById(R.id.edit_employee);
-//        SalaryDBHelper dbHelper = new SalaryDBHelper(AddInformationActivity.this,
-//                dbName, null, 1);
-//        SQLiteDatabase database = dbHelper.getReadableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("name", editEmployee.getText().toString());
-//        database.insert("employee", null, contentValues);
-//        database.close();
-//        if (DEBUG) {
-//            Log.d(TAG, "insertEmployee: 插入员工");
-//            Log.d(TAG, "insertEmployee: name = " + editEmployee.getText());
-//        }
-//        editEmployee.setText("");
-//    }
+    // 将字符窜浮点数 转成 int类型值
+    private int handlePrice(String string) {
+        float floatPrice = Float.parseFloat(string);
+        return Math.round(floatPrice * 100);
+    }
 }

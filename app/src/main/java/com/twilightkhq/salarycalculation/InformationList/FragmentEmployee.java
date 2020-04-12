@@ -26,7 +26,7 @@ import java.util.List;
 public class FragmentEmployee extends Fragment {
 
     private static final String dbName = "salary";
-    private List<String> names = new ArrayList<>();
+    private static List<String> names = new ArrayList<>();
 
     public FragmentEmployee() {
         // Required empty public constructor
@@ -73,6 +73,7 @@ public class FragmentEmployee extends Fragment {
         while (cursor.moveToNext()) {
             names.add(cursor.getString(cursor.getColumnIndex("name")));
         }
+        cursor.close();
         Collections.sort(names);
         database.close();
     }

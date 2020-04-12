@@ -31,7 +31,6 @@ public class FragmentAddEmployee extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_employee, container, false);
 
-
         return view;
     }
 }
