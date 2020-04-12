@@ -13,7 +13,7 @@ import com.twilightkhq.salarycalculation.InformationList.InformationListActivity
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static boolean DEBUG = true;
-    private static String TAG = "---zzq---debug";
+    private static String TAG = "--zzq--debug";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
