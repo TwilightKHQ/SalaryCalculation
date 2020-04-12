@@ -11,26 +11,45 @@
         android:id="@+id/information_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_half_circle"
         android:text="@string/information_list" />
 
     <Button
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_half_circle"
         android:id="@+id/add_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_information" />
 
     <Button
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_half_circle"
         android:id="@+id/check_salary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/check_salary" />
 
     <Button
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_half_circle"
         android:id="@+id/salary_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/salary_list" />
-
 
 
 </LinearLayout>

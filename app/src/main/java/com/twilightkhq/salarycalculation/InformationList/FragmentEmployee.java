@@ -1,5 +1,7 @@
 package com.twilightkhq.salarycalculation.InformationList;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +15,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class FragmentEmployee extends Fragment {
 
-    private String[] data = {"Sunny","Cloudy","Few Clouds","Partly Cloudy","Overcast","Windy","Calm","Light Breeze",
-            "Moderate","Fresh Breeze","Dense fog","Strong fog","Moderate haze","Heavy haze","Severe haze","Heavy fog","Extra heavy fog",
-            "Hot","Cold","Unknown"};
+    private static final String dbName = "salary";
+    private List<String> names = new ArrayList<>();
 
     public FragmentEmployee() {
         // Required empty public constructor
@@ -28,7 +35,6 @@ public class FragmentEmployee extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -39,7 +45,8 @@ public class FragmentEmployee extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.list_view);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, data);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, names);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -49,5 +56,24 @@ public class FragmentEmployee extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        queryEmployee();
+    }
+
+    private void queryEmployee() {
+        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
+        SQLiteDatabase database =  dbHelper.getReadableDatabase();
+        Cursor cursor = database.query("employee", new String[]{"id", "name"},
+                null, null, null, null, null);
+        names.clear();
+        while (cursor.moveToNext()) {
+            names.add(cursor.getString(cursor.getColumnIndex("name")));
+        }
+        Collections.sort(names);
+        database.close();
     }
 }

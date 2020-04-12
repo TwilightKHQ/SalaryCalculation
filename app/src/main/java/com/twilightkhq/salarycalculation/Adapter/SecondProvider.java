@@ -22,4 +22,6 @@ public class SecondProvider extends BaseNodeProvider {
         SecondNode entity = (SecondNode) baseNode;
         baseViewHolder.setText(R.id.title, entity.getTitle());
     }
+
+
 }

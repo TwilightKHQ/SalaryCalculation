@@ -12,10 +12,12 @@
         android:text="新增款式" />
 
     <EditText
-        android:id="@+id/edit_text_style"
+        android:id="@+id/edit_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入款式名称" />
+        android:hint="请输入款式名称"
+        android:inputType="text"
+        android:maxLines="1" />
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +25,7 @@
         android:text="该款式件数" />
 
     <EditText
-        android:id="@+id/edit_text_number"
+        android:id="@+id/edit_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入件数"
@@ -35,7 +37,7 @@
         android:text="该款式工序数量" />
 
     <EditText
-        android:id="@+id/edit_text_process_number"
+        android:id="@+id/edit_process_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入款式工序数量"
@@ -47,10 +49,10 @@
         android:text="该款式单件价格" />
 
     <EditText
-        android:id="@+id/edit_text_price"
+        android:id="@+id/edit_style_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入单件价格"
+        android:hint="请输入款式价格"
         android:inputType="numberDecimal" />
 
 </LinearLayout>

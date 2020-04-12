@@ -10,27 +10,27 @@ import androidx.annotation.Nullable;
 public class SalaryDBHelper extends SQLiteOpenHelper {
 
     private static boolean DEBUG = true;
-    private static String TAG = "--zzq--debug--" + SalaryDBHelper.class.getName();
+    private static String TAG = "--zzq--debug--";
 
     //员工表 记录 员工名
     private static final String createTableEmployee = "create table if not exists "
             + "employee" + " ("
-            + "id int primary key,"
+            + "id INTEGER primary key AUTOINCREMENT,"
             + "name varchar"
             + ")";
-    //款式表 记录 款式 工序数量 单件总价 件数
+    //款式表 记录 款式 工序数量 款式单价 件数
     private static final String createTableStyle = "create table if not exists "
             + "style" + " ("
-            + "id int primary key,"
+            + "id INTEGER primary key AUTOINCREMENT,"
             + "style varchar,"
             + "process_number int,"
-            + "price int,"
+            + "style_price int,"
             + "number int"
             + ")";
     //工序表 记录 款式 工序号 工序单价 件数
     private static final String createTableProcess = "create table if not exists "
             + "process" + " ("
-            + "id int primary key,"
+            + "id INTEGER primary key AUTOINCREMENT,"
             + "style varchar,"
             + "process_id int,"
             + "process_price int,"
@@ -39,7 +39,7 @@ public class SalaryDBHelper extends SQLiteOpenHelper {
     //流程表 记录 员工名 款式 工序号 件数
     private static final String createTableCircuit = "create table if not exists "
             + "circuit" + " ("
-            + "id int primary key,"
+            + "id INTEGER primary key AUTOINCREMENT,"
             + "name varchar,"
             + "style varchar,"
             + "process_id int,"

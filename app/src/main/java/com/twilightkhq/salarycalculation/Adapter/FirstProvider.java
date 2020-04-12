@@ -1,5 +1,6 @@
 package com.twilightkhq.salarycalculation.Adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -16,6 +17,10 @@ import com.twilightkhq.salarycalculation.R;
 import java.util.List;
 
 public class FirstProvider extends BaseNodeProvider {
+
+    private static boolean DEBUG = true;
+    private static String TAG = "--zzq--debug--";
+
     @Override
     public int getItemViewType() {
         return 1;
@@ -50,6 +55,12 @@ public class FirstProvider extends BaseNodeProvider {
     public void onClick(@NonNull BaseViewHolder helper, @NonNull View view, BaseNode data, int position) {
         // 这里使用payload进行增量刷新（避免整个item刷新导致的闪烁，不自然）
         getAdapter().expandOrCollapse(position, true, true, AdapterNodeTree.EXPAND_COLLAPSE_PAYLOAD);
+    }
+
+    @Override
+    public boolean onLongClick(BaseViewHolder helper, View view, BaseNode data, int position) {
+        Log.d(TAG, "onLongClick: 长按 " + position);
+        return super.onLongClick(helper, view, data, position);
     }
 
     private void setArrowSpin(BaseViewHolder helper, BaseNode data, boolean isAnimate) {
