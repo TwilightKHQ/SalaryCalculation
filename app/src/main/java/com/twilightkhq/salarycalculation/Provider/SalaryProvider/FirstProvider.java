@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.Adapter;
+package com.twilightkhq.salarycalculation.Provider.SalaryProvider;
 
 import android.util.Log;
 import android.view.View;
@@ -11,7 +11,8 @@ import androidx.core.view.ViewCompat;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.twilightkhq.salarycalculation.Entity.FirstNode;
+import com.twilightkhq.salarycalculation.Adapter.Adapter2FloorNodeTree;
+import com.twilightkhq.salarycalculation.Entity.ThreeColNode.FirstNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class FirstProvider extends BaseNodeProvider {
 
     @Override
     public int getLayoutId() {
-        return R.layout.item_node_first;
+        return R.layout.item_node_title;
     }
 
 
@@ -44,7 +45,7 @@ public class FirstProvider extends BaseNodeProvider {
     @Override
     public void convert(@NonNull BaseViewHolder helper, BaseNode item, List<?> payloads) {
         for (Object payload : payloads) {
-            if (payload instanceof Integer && (int) payload == AdapterNodeTree.EXPAND_COLLAPSE_PAYLOAD) {
+            if (payload instanceof Integer && (int) payload == Adapter2FloorNodeTree.EXPAND_COLLAPSE_PAYLOAD) {
                 // 增量刷新，使用动画变化箭头
                 setArrowSpin(helper, item, true);
             }
@@ -54,7 +55,7 @@ public class FirstProvider extends BaseNodeProvider {
     @Override
     public void onClick(@NonNull BaseViewHolder helper, @NonNull View view, BaseNode data, int position) {
         // 这里使用payload进行增量刷新（避免整个item刷新导致的闪烁，不自然）
-        getAdapter().expandOrCollapse(position, true, true, AdapterNodeTree.EXPAND_COLLAPSE_PAYLOAD);
+        getAdapter().expandOrCollapse(position, true, true, Adapter2FloorNodeTree.EXPAND_COLLAPSE_PAYLOAD);
     }
 
     @Override

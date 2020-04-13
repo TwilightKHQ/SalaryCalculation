@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
     tools:context=".InformationList.FragmentEmployee">
 
@@ -17,11 +18,14 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:visibility="gone"
+        android:id="@+id/text_choose_process"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="选择工序" />
 
     <Spinner
+        android:visibility="gone"
         android:id="@+id/spinner_process_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -36,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入该工序的单价"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <TextView
         android:layout_width="match_parent"

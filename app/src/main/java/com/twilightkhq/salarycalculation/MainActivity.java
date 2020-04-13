@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
 import com.twilightkhq.salarycalculation.InformationList.InformationListActivity;
+import com.twilightkhq.salarycalculation.SalaryList.SalaryListActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

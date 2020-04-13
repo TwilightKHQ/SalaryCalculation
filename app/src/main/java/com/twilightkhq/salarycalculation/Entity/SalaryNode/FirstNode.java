@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.Entity;
+package com.twilightkhq.salarycalculation.Entity.SalaryNode;
 
 import androidx.annotation.Nullable;
 
@@ -10,17 +10,17 @@ import java.util.List;
 public class FirstNode extends BaseExpandNode {
 
     private List<BaseNode> childNode;
-    private String title;
+    private String style;
 
-    public FirstNode(List<BaseNode> childNode, String title) {
+    public FirstNode(List<BaseNode> childNode, String style) {
         this.childNode = childNode;
-        this.title = title;
+        this.style = style;
 
         setExpanded(false);
     }
 
-    public String getTitle() {
-        return title;
+    public String getStyle() {
+        return style;
     }
 
     @Nullable

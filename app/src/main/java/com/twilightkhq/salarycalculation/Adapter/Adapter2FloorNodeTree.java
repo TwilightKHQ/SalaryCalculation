@@ -2,16 +2,18 @@ package com.twilightkhq.salarycalculation.Adapter;
 
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
-import com.twilightkhq.salarycalculation.Entity.FirstNode;
-import com.twilightkhq.salarycalculation.Entity.SecondNode;
+import com.twilightkhq.salarycalculation.Entity.ThreeColNode.FirstNode;
+import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
+import com.twilightkhq.salarycalculation.Provider.ThreeColProvider.FirstProvider;
+import com.twilightkhq.salarycalculation.Provider.ThreeColProvider.SecondProvider;
 
 import java.util.List;
 
-public class AdapterNodeTree extends BaseNodeAdapter {
+public class Adapter2FloorNodeTree extends BaseNodeAdapter {
 
     public static final int EXPAND_COLLAPSE_PAYLOAD = 110;
 
-    public AdapterNodeTree() {
+    public Adapter2FloorNodeTree() {
         super();
         addNodeProvider(new FirstProvider());
         addNodeProvider(new SecondProvider());

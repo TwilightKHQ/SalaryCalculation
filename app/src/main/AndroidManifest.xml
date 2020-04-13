@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".CheckSalaryActivity" />
-        <activity android:name=".SalaryListActivity" />
+        <activity android:name=".SalaryList.SalaryListActivity" />
         <activity android:name=".AddInformation.AddInformationActivity" />
         <activity android:name=".InformationList.InformationListActivity" />
         <activity android:name=".MainActivity">

@@ -25,7 +25,7 @@ import java.util.List;
 
 public class FragmentEmployee extends Fragment {
 
-    private static final String dbName = "salary";
+    private static final String dbName = "salary.db";
     private static List<String> names = new ArrayList<>();
 
     public FragmentEmployee() {

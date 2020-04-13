@@ -10,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.twilightkhq.salarycalculation.Adapter.AdapterArray;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.R;
 
@@ -26,7 +28,7 @@ public class FragmentAddProcess extends Fragment {
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug";
 
-    private static final String dbName = "salary";
+    private static final String dbName = "salary.db";
     private static List<String> styles = new ArrayList<>();
     private static List<Integer> processNumbers = new ArrayList<>();
     private static List<String> processIDs = new ArrayList<>();
@@ -46,8 +48,8 @@ public class FragmentAddProcess extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_process, container, false);
 
-        initView(view);
         queryStyle();
+        initView(view);
 
         return view;
     }
@@ -60,11 +62,11 @@ public class FragmentAddProcess extends Fragment {
 
     private void initView(View view) {
         Spinner spinnerStyle = (Spinner) view.findViewById(R.id.spinner_style);
-        Spinner spinnerProcessID = (Spinner) view.findViewById(R.id.spinner_process_id);
-        spinnerStyle.setAdapter(new ArrayAdapter<String>(getActivity(),
+        final Spinner spinnerProcessID = (Spinner) view.findViewById(R.id.spinner_process_id);
+        final TextView tvChooseProcess = (TextView) view.findViewById(R.id.text_choose_process);
+        spinnerStyle.setAdapter(new AdapterArray<String>(getActivity(),
                 android.R.layout.simple_list_item_1, styles));
-        spinnerProcessID.setAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, processIDs));
+        spinnerStyle.setSelection(styles.size() - 1, true);
         spinnerStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -74,6 +76,16 @@ public class FragmentAddProcess extends Fragment {
                 processIDs.clear();
                 for (int i = 1; i <= processNumbers.get(position); i++) {
                     processIDs.add(i + "");
+                }
+                processIDs.add("请选择工序");
+                spinnerProcessID.setAdapter(new AdapterArray<String>(getActivity(),
+                        android.R.layout.simple_list_item_1, processIDs));
+                spinnerProcessID.setSelection(processIDs.size() - 1, true);
+                if (tvChooseProcess.getVisibility() != View.VISIBLE) {
+                    tvChooseProcess.setVisibility(View.VISIBLE);
+                }
+                if (spinnerProcessID.getVisibility() != View.VISIBLE) {
+                    spinnerProcessID.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -96,6 +108,7 @@ public class FragmentAddProcess extends Fragment {
         }
         cursor.close();
         Collections.sort(styles);
+        styles.add("请选择款式");
         database.close();
     }
 }

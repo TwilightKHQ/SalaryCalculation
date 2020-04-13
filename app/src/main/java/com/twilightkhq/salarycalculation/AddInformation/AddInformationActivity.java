@@ -28,7 +28,7 @@ public class AddInformationActivity extends AppCompatActivity {
 
     private static int currentViewPagePosition = 0;
     private AdapterFragment adapterFragment;
-    private static final String dbName = "salary";
+    private static final String dbName = "salary.db";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +139,7 @@ public class AddInformationActivity extends AppCompatActivity {
                     spinnerStyle = (Spinner) fragmentView.findViewById(R.id.spinner_style);
                     spinnerProcessID = (Spinner) fragmentView.findViewById(R.id.spinner_process_id);
                     editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
-                    contentValues.put("employee", spinnerEmployee.getSelectedItem().toString());
+                    contentValues.put("name", spinnerEmployee.getSelectedItem().toString());
                     contentValues.put("style", spinnerStyle.getSelectedItem().toString());
                     contentValues.put("process_id", spinnerProcessID.getSelectedItem().toString());
                     contentValues.put("number", Integer.valueOf(editNumber.getText().toString()) );

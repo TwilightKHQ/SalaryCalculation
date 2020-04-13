@@ -1,9 +1,9 @@
-package com.twilightkhq.salarycalculation.Adapter;
+package com.twilightkhq.salarycalculation.Provider.ThreeColProvider;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.twilightkhq.salarycalculation.Entity.SecondNode;
+import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
 import com.twilightkhq.salarycalculation.R;
 
 public class SecondProvider extends BaseNodeProvider {
@@ -14,14 +14,15 @@ public class SecondProvider extends BaseNodeProvider {
 
     @Override
     public int getLayoutId()  {
-        return R.layout.item_node_second;
+        return R.layout.item_node_three_col;
     }
 
     @Override
     public void convert(BaseViewHolder baseViewHolder, BaseNode baseNode) {
         SecondNode entity = (SecondNode) baseNode;
-        baseViewHolder.setText(R.id.title, entity.getTitle());
+        baseViewHolder.setText(R.id.tv_str1, entity.getStr1());
+        baseViewHolder.setText(R.id.tv_str2, entity.getStr2());
+        baseViewHolder.setText(R.id.tv_str3, entity.getStr3());
     }
-
 
 }

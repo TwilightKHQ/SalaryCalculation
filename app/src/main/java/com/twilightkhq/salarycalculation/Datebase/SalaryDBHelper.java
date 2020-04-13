@@ -36,14 +36,15 @@ public class SalaryDBHelper extends SQLiteOpenHelper {
             + "process_price int,"
             + "number int"
             + ")";
-    //流程表 记录 员工名 款式 工序号 件数
+    //流程表 记录 员工名 款式 工序号 件数 工序单价
     private static final String createTableCircuit = "create table if not exists "
             + "circuit" + " ("
             + "id INTEGER primary key AUTOINCREMENT,"
             + "name varchar,"
             + "style varchar,"
             + "process_id int,"
-            + "number int"
+            + "number int,"
+            + "process_price int"
             + ")";
 
     public SalaryDBHelper(@Nullable Context context, @Nullable String name,

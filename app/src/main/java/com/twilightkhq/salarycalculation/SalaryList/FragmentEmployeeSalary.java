@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.InformationList;
+package com.twilightkhq.salarycalculation.SalaryList;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,15 +20,18 @@ import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class FragmentStyle extends Fragment {
+public class FragmentEmployeeSalary extends Fragment {
 
     private static final String dbName = "salary.db";
-    private Adapter2FloorNodeTree adapter = new Adapter2FloorNodeTree();
-    private static List<BaseNode> nodeList = new ArrayList<>();
 
-    public FragmentStyle() {
+    private static int salary = 0;
+    private static List<BaseNode> nodeList = new ArrayList<>();
+    private Adapter2FloorNodeTree adapter = new Adapter2FloorNodeTree();
+
+    public FragmentEmployeeSalary() {
         // Required empty public constructor
     }
 
@@ -37,50 +41,47 @@ public class FragmentStyle extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_style, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_employee_salary, container, false);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-        queryStyle();
+        queryEmployee();
         adapter.setList(nodeList);
 
         return view;
     }
 
-    private void queryStyle() {
+    private void queryEmployee() {
         SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("style", null, null,
-                null, null, null, null);
+        SQLiteDatabase database =  dbHelper.getReadableDatabase();
+        Cursor cursor = database.query("employee", new String[]{"id", "name"},
+                null, null, null, null, "name");
         nodeList.clear();
         while (cursor.moveToNext()) {
-            String style = cursor.getString(cursor.getColumnIndex("style"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
             List<BaseNode> secondNodeList = new ArrayList<>();
-            secondNodeList.add(new SecondNode("工序数量", "件数", "款式单价"));
-            secondNodeList.add(new SecondNode(cursor.getInt(cursor.getColumnIndex("process_number")) + "",
-                    cursor.getInt(cursor.getColumnIndex("number")) + "",
-                    cursor.getInt(cursor.getColumnIndex("style_price")) + ""
-            ));
-            queryProcess(style, secondNodeList);
-            nodeList.add(new FirstNode(secondNodeList, style));
+            queryCircuit(name, secondNodeList);
+            nodeList.add(new FirstNode(secondNodeList, name));
         }
         cursor.close();
         database.close();
     }
 
-    private void queryProcess(String style, List<BaseNode> baseNodeList) {
-        baseNodeList.add(new SecondNode("工序", "数量", "单价"));
+    private void queryCircuit(String name, List<BaseNode> baseNodeList) {
+        baseNodeList.add(new SecondNode("款式", "工序", "件数"));
         SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("process",
-                new String[]{"style", "process_id", "process_price", "number"}, "style=?",
-                new String[]{style}, null, null, "process_id");
+        Cursor cursor = database.query("circuit",
+                new String[]{"name", "style", "process_id", "number"}, "name=?",
+                new String[]{name}, null, null, "style");
         while (cursor.moveToNext()) {
-            baseNodeList.add(new SecondNode(cursor.getInt(cursor.getColumnIndex("process_id")) + "",
-                    cursor.getInt(cursor.getColumnIndex("number")) + "",
-                    cursor.getInt(cursor.getColumnIndex("process_price")) + ""));
+            baseNodeList.add(new SecondNode(cursor.getString(cursor.getColumnIndex("style")),
+                    cursor.getInt(cursor.getColumnIndex("process_id")) + "",
+                    cursor.getInt(cursor.getColumnIndex("number")) + ""));
         }
         cursor.close();
         database.close();
