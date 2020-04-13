@@ -6,7 +6,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -18,9 +20,7 @@ import com.twilightkhq.salarycalculation.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialogBottom extends DialogFragment {
-
-    private TextView textCancel;
+public class DialogBottom extends DialogFragment implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,32 +44,32 @@ public class DialogBottom extends DialogFragment {
 //        lp.height = getActivity().getWindowManager().getDefaultDisplay().getHeight() / 3;
         window.setAttributes(lp);
 
-//        initView(dialog);
+        initView(dialog);
         // 窗口初始化后 请求网络数据
         return dialog;
     }
 
-//    private void initView(Dialog dialog) {
-//
-//        RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.left_recycle_view);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(AppUtil.getContext());
-//        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        recyclerView.setLayoutManager(layoutManager);
-//        AdapterMenuItem adapterMenuItem = new AdapterMenuItem(R.layout.item_menu, menuItemList);
-//        recyclerView.setAdapter(adapterMenuItem);
-//
-//        textCancel = (TextView) dialog.findViewById(R.id.cancel);
-//
-//        setListener();
-//
-//    }
+    private void initView(Dialog dialog) {
+        Button btChange = (Button) dialog.findViewById(R.id.bt_change);
+        Button btDelete = (Button) dialog.findViewById(R.id.bt_delete);
+        TextView  textCancel = (TextView) dialog.findViewById(R.id.cancel);
+        btChange.setOnClickListener(this);
+        btDelete.setOnClickListener(this);
+        textCancel.setOnClickListener(this);
+    }
 
-    private void setListener() {
-        textCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.bt_change:
+                Toast.makeText(getActivity(), "change", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.bt_delete:
+                Toast.makeText(getActivity(), "delete", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.cancel:
                 dismiss();
-            }
-        });
+                break;
+        }
     }
 }

@@ -92,7 +92,7 @@ public class AddInformationActivity extends AppCompatActivity {
         }
         SalaryDBHelper dbHelper = new SalaryDBHelper(AddInformationActivity.this,
                 dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         View fragmentView = adapterFragment.getItem(type).getView();
         if (fragmentView != null) {

@@ -3,20 +3,26 @@ package com.twilightkhq.salarycalculation.InformationList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.chad.library.adapter.base.listener.OnItemChildLongClickListener;
+import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.twilightkhq.salarycalculation.Adapter.Adapter2FloorNodeTree;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.Entity.ThreeColNode.FirstNode;
 import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
 import com.twilightkhq.salarycalculation.R;
+import com.twilightkhq.salarycalculation.View.DialogBottom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +46,23 @@ public class FragmentStyle extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_style, container, false);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         queryStyle();
         adapter.setList(nodeList);
+        adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                Log.d("zzq", "onItemLongClick: position = " + position);
+                if (adapter.getItemViewType(position) == 1) {
+                    DialogBottom dialogBottom = new DialogBottom();
+                    dialogBottom.show(getActivity().getSupportFragmentManager(), "dialogBottom");
+                }
+                return false;
+            }
+        });
 
         return view;
     }

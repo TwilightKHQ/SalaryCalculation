@@ -4,8 +4,10 @@ import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Entity.SalaryNode.FirstNode;
 import com.twilightkhq.salarycalculation.Entity.SalaryNode.SecondNode;
+import com.twilightkhq.salarycalculation.Entity.SalaryNode.ThirdNode;
 import com.twilightkhq.salarycalculation.Provider.SalaryProvider.FirstProvider;
 import com.twilightkhq.salarycalculation.Provider.SalaryProvider.SecondProvider;
+import com.twilightkhq.salarycalculation.Provider.SalaryProvider.ThirdProvider;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class Adapter3FloorNodeTree extends BaseNodeAdapter {
         super();
         addNodeProvider(new FirstProvider());
         addNodeProvider(new SecondProvider());
-        addNodeProvider(new SecondProvider());
+        addNodeProvider(new ThirdProvider());
     }
 
     @Override
@@ -27,7 +29,7 @@ public class Adapter3FloorNodeTree extends BaseNodeAdapter {
             return 1;
         } else if (node instanceof SecondNode) {
             return 2;
-        } else if (node instanceof SecondNode) {
+        } else if (node instanceof ThirdNode) {
             return 3;
         }
         return -1;

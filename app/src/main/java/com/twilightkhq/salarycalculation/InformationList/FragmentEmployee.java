@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.R;
+import com.twilightkhq.salarycalculation.View.DialogBottom;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,11 +49,12 @@ public class FragmentEmployee extends Fragment {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, names);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = (String) adapter.getItem(position);
-                Toast.makeText(getActivity(), item, Toast.LENGTH_SHORT).show();
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                DialogBottom dialogBottom = new DialogBottom();
+                dialogBottom.show(getActivity().getSupportFragmentManager(), "dialogBottom");
+                return false;
             }
         });
         return view;
