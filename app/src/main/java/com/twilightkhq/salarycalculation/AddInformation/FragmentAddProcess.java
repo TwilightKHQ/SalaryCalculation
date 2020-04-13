@@ -54,18 +54,14 @@ public class FragmentAddProcess extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        queryStyle();
-    }
-
     private void initView(View view) {
+        Log.d(TAG, "initView: ");
         Spinner spinnerStyle = (Spinner) view.findViewById(R.id.spinner_style);
         final Spinner spinnerProcessID = (Spinner) view.findViewById(R.id.spinner_process_id);
         final TextView tvChooseProcess = (TextView) view.findViewById(R.id.text_choose_process);
         spinnerStyle.setAdapter(new AdapterArray<String>(getActivity(),
                 android.R.layout.simple_list_item_1, styles));
+
         spinnerStyle.setSelection(styles.size() - 1, true);
         spinnerStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -91,12 +87,13 @@ public class FragmentAddProcess extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                Log.d(TAG, "onNothingSelected: nothing");
             }
         });
     }
 
     private void queryStyle() {
+        Log.d(TAG, "queryStyle: ");
         SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query("style", null, null,
