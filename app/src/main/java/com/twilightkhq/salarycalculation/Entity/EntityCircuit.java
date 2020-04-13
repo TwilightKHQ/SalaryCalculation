@@ -1,5 +1,7 @@
 package com.twilightkhq.salarycalculation.Entity;
 
+import androidx.annotation.NonNull;
+
 public class EntityCircuit {
 
     private String name;
@@ -44,5 +46,16 @@ public class EntityCircuit {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "EntityCircuit{" +
+                "name='" + name + '\'' +
+                ", style='" + style + '\'' +
+                ", processID=" + processID +
+                ", number=" + number +
+                '}';
     }
 }
