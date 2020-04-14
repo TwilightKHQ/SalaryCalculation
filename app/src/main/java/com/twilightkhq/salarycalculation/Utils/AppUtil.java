@@ -20,9 +20,9 @@ public class AppUtil extends Application {
         return context;
     }
 
-    public static SalaryDao getSalaryDaoInstance() {
+    public static SalaryDao getSalaryDaoInstance(String dbName) {
         if (instance == null) {
-            instance = new SalaryDao(context);
+            instance = new SalaryDao(context, dbName);
         }
         return instance;
     }

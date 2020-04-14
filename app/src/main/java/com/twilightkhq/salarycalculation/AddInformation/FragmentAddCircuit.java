@@ -121,8 +121,8 @@ public class FragmentAddCircuit extends Fragment {
     private void queryEmployee() {
         SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("employee", new String[]{"id", "name"},
-                null, null, null, null, null);
+        Cursor cursor = database.query("employee", null, null,
+                null, null, null, null);
         names.clear();
         while (cursor.moveToNext()) {
             names.add(cursor.getString(cursor.getColumnIndex("name")));

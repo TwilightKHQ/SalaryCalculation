@@ -15,14 +15,12 @@ public class SalaryDBHelper extends SQLiteOpenHelper {
     //员工表 记录 员工名
     private static final String createTableEmployee = "create table if not exists "
             + "employee" + " ("
-            + "id INTEGER primary key AUTOINCREMENT,"
-            + "name varchar"
+            + "name varchar primary key"
             + ")";
     //款式表 记录 款式 工序数量 款式单价 件数
     private static final String createTableStyle = "create table if not exists "
             + "style" + " ("
-            + "id INTEGER primary key AUTOINCREMENT,"
-            + "style varchar,"
+            + "style varchar primary key,"
             + "process_number int,"
             + "style_price int,"
             + "number int"

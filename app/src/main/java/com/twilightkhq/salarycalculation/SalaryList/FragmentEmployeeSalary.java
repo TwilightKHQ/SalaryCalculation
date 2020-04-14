@@ -58,7 +58,7 @@ public class FragmentEmployeeSalary extends Fragment {
     private void queryEmployee() {
         SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
         SQLiteDatabase database =  dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("employee", new String[]{"id", "name"},
+        Cursor cursor = database.query("employee", null,
                 null, null, null, null, "name");
         nodeList.clear();
         while (cursor.moveToNext()) {
