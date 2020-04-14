@@ -3,10 +3,14 @@ package com.twilightkhq.salarycalculation.AddInformation;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,9 +18,12 @@ import androidx.fragment.app.Fragment;
 
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
 import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
+import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
+import com.twilightkhq.salarycalculation.Utils.SomeUtils;
 
 import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
@@ -25,16 +32,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FragmentAddCircuit extends Fragment {
+public class FragmentAddCircuit extends Fragment implements View.OnClickListener {
 
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug";
 
-    private static final String dbName = "salary.db";
+    private boolean numberFlag = false;
     private static List<String> names = new ArrayList<>();
     private static List<String> styles = new ArrayList<>();
     private static List<Integer> processNumbers = new ArrayList<>();
     private static List<String> processIDs = new ArrayList<>();
+
+    private NiceSpinner spinnerEmployee;
+    private NiceSpinner spinnerStyle;
+    private NiceSpinner spinnerProcessID;
+    private EditText editNumber;
 
     public FragmentAddCircuit() {
         // Required empty public constructor
@@ -76,11 +88,16 @@ public class FragmentAddCircuit extends Fragment {
     }
 
     private void initView(View view) {
-        NiceSpinner spinnerEmployee = (NiceSpinner) view.findViewById(R.id.spinner_employee);
-        final NiceSpinner spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
-        final NiceSpinner spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
+        spinnerEmployee = (NiceSpinner) view.findViewById(R.id.spinner_employee);
         final TextView tvChooseStyle = (TextView) view.findViewById(R.id.tv_choose_style);
+        spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
         final TextView tvChooseProcessID = (TextView) view.findViewById(R.id.tv_choose_process_id);
+        spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
+        editNumber = (EditText) view.findViewById(R.id.edit_number);
+
+        Button button = (Button) view.findViewById(R.id.bt_change);
+        button.setOnClickListener(this);
+        button.setEnabled(numberFlag);
 
         spinnerEmployee.attachDataSource(names);
         spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
@@ -120,5 +137,37 @@ public class FragmentAddCircuit extends Fragment {
                 }
             }
         });
+
+        editNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                numberFlag = s.length() >= 1 && !" ".contentEquals(s);
+                Log.d(TAG, "onTextChanged: employeeFlag = " + numberFlag);
+                button.setEnabled(numberFlag);
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.bt_change) {
+            SalaryDao.getInstance(getActivity()).insertCircuit(new EntityCircuit(
+                    spinnerEmployee.getSelectedItem().toString(),
+                    spinnerStyle.getSelectedItem().toString(),
+                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
+                    Integer.parseInt(editNumber.getText().toString())
+            ));
+            editNumber.setText("");
+        }
     }
 }

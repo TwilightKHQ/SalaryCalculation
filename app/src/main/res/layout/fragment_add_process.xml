@@ -7,51 +7,69 @@
     android:orientation="vertical"
     tools:context=".InformationList.FragmentEmployee">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择款式" />
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/text_choose_process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="选择工序"
+            android:visibility="gone" />
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner_process_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="单价" />
+
+        <EditText
+            android:id="@+id/edit_process_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入该工序的单价"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="件数" />
+
+        <EditText
+            android:id="@+id/edit_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入该工序的单件价格"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_change"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="选择款式" />
-
-    <org.angmarch.views.NiceSpinner
-        android:id="@+id/spinner_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/text_choose_process"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="选择工序" />
-
-    <org.angmarch.views.NiceSpinner
-        android:visibility="gone"
-        android:id="@+id/spinner_process_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="单价" />
-
-    <EditText
-        android:id="@+id/edit_process_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入该工序的单价"
-        android:inputType="numberDecimal" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="件数" />
-
-    <EditText
-        android:id="@+id/edit_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入该工序的单件价格"
-        android:inputType="number" />
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/btn_half_circle"
+        android:text="@string/add" />
 
 </LinearLayout>

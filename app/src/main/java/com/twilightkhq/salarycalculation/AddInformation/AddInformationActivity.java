@@ -27,21 +27,14 @@ import org.angmarch.views.NiceSpinner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddInformationActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddInformationActivity extends AppCompatActivity {
 
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug";
 
-    private static int currentViewPagePosition = 0;
     private AdapterFragment adapterFragment;
 
-    private Button btChange;
     private ViewPager viewPager;
-
-    private boolean employeeFlag = false;
-    private boolean styleFlag = false;
-    private boolean processFlag = false;
-    private boolean circuitFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +48,8 @@ public class AddInformationActivity extends AppCompatActivity implements View.On
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
-        btChange = (Button) findViewById(R.id.bt_change);
-        btChange.setOnClickListener(this);
+//        btChange = (Button) findViewById(R.id.bt_change);
+//        btChange.setOnClickListener(this);
 
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> titleList = new ArrayList<>();
@@ -74,20 +67,16 @@ public class AddInformationActivity extends AppCompatActivity implements View.On
         tabLayout.setupWithViewPager(viewPager);
 
         initListener();
-
-
     }
 
     private void initListener() {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                currentViewPagePosition = position;
             }
 
             @Override
             public void onPageSelected(int position) {
-                currentViewPagePosition = position;
             }
 
             @Override
@@ -108,39 +97,39 @@ public class AddInformationActivity extends AppCompatActivity implements View.On
             EditText editNumber;
             switch (type) {
                 case 0:
-                    EditText editEmployee = (EditText) fragmentView.findViewById(R.id.edit_employee);
-                    SalaryDao.getInstance(this).insertEmployee(new EntityEmployee(editEmployee.getText().toString()));
-                    editEmployee.setText("");
+//                    EditText editEmployee = (EditText) fragmentView.findViewById(R.id.edit_employee);
+//                    SalaryDao.getInstance(this).insertEmployee(new EntityEmployee(editEmployee.getText().toString()));
+//                    editEmployee.setText("");
                     break;
                 case 1:
-                    EditText editStyle = (EditText) fragmentView.findViewById(R.id.edit_style);
-                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
-                    EditText editStylePrice = (EditText) fragmentView.findViewById(R.id.edit_style_price);
-                    EditText editProcessNumber = (EditText) fragmentView.findViewById(R.id.edit_process_number);
-                    SalaryDao.getInstance(this).insertStyle(new EntityStyle(
-                            editStyle.getText().toString(),
-                            Integer.parseInt(editProcessNumber.getText().toString()),
-                            handlePrice(editStylePrice.getText().toString()),
-                            Integer.parseInt(editNumber.getText().toString())
-                    ));
-                    editStyle.setText("");
-                    editNumber.setText("");
-                    editStylePrice.setText("");
-                    editProcessNumber.setText("");
+//                    EditText editStyle = (EditText) fragmentView.findViewById(R.id.edit_style);
+//                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
+//                    EditText editStylePrice = (EditText) fragmentView.findViewById(R.id.edit_style_price);
+//                    EditText editProcessNumber = (EditText) fragmentView.findViewById(R.id.edit_process_number);
+//                    SalaryDao.getInstance(this).insertStyle(new EntityStyle(
+//                            editStyle.getText().toString(),
+//                            Integer.parseInt(editProcessNumber.getText().toString()),
+//                            handlePrice(editStylePrice.getText().toString()),
+//                            Integer.parseInt(editNumber.getText().toString())
+//                    ));
+//                    editStyle.setText("");
+//                    editNumber.setText("");
+//                    editStylePrice.setText("");
+//                    editProcessNumber.setText("");
                     break;
                 case 2:
-                    spinnerStyle = (NiceSpinner) fragmentView.findViewById(R.id.spinner_style);
-                    spinnerProcessID = (NiceSpinner) fragmentView.findViewById(R.id.spinner_process_id);
-                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
-                    EditText editProcessPrice = (EditText) fragmentView.findViewById(R.id.edit_process_price);
-                    SalaryDao.getInstance(this).insertProcess(new EntityProcess(
-                            spinnerStyle.getSelectedItem().toString(),
-                            Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
-                            handlePrice(editProcessPrice.getText().toString()),
-                            Integer.parseInt(editNumber.getText().toString())
-                    ));
-                    editNumber.setText("");
-                    editProcessPrice.setText("");
+//                    spinnerStyle = (NiceSpinner) fragmentView.findViewById(R.id.spinner_style);
+//                    spinnerProcessID = (NiceSpinner) fragmentView.findViewById(R.id.spinner_process_id);
+//                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
+//                    EditText editProcessPrice = (EditText) fragmentView.findViewById(R.id.edit_process_price);
+//                    SalaryDao.getInstance(this).insertProcess(new EntityProcess(
+//                            spinnerStyle.getSelectedItem().toString(),
+//                            Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
+//                            handlePrice(editProcessPrice.getText().toString()),
+//                            Integer.parseInt(editNumber.getText().toString())
+//                    ));
+//                    editNumber.setText("");
+//                    editProcessPrice.setText("");
                     break;
                 case 3:
                     NiceSpinner spinnerEmployee = (NiceSpinner) fragmentView.findViewById(R.id.spinner_employee);
@@ -159,30 +148,16 @@ public class AddInformationActivity extends AppCompatActivity implements View.On
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.bt_change) {
-            insertData(currentViewPagePosition);
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+////        if (v.getId() == R.id.bt_change) {
+////            insertData(currentViewPagePosition);
+////        }
+//    }
 
     // 将字符窜浮点数 转成 int类型值
     private int handlePrice(String string) {
         float floatPrice = Float.parseFloat(string);
         return Math.round(floatPrice * 100);
-    }
-
-    private void isButtonValid(int position) {
-        switch (position) {
-            case 0:
-                btChange.setClickable(employeeFlag);
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-        }
     }
 }

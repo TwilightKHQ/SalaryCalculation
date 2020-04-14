@@ -6,17 +6,35 @@
     android:orientation="vertical"
     tools:context=".InformationList.FragmentEmployee">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="新增员工" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edit_employee"
-        android:maxLines="1"
-        android:inputType="text"
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="新增员工" />
+
+        <EditText
+            android:id="@+id/edit_employee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入员工姓名"
+            android:inputType="text"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_change"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入员工姓名" />
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/btn_half_circle"
+        android:text="@string/add" />
 
 </LinearLayout>
