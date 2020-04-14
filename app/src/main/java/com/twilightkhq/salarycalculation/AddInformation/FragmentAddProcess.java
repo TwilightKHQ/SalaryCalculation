@@ -17,7 +17,12 @@ import androidx.fragment.app.Fragment;
 
 import com.twilightkhq.salarycalculation.Adapter.AdapterArray;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
+import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
+
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,24 +53,37 @@ public class FragmentAddProcess extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_process, container, false);
 
-        queryStyle();
+//        queryStyle();
+        initData();
         initView(view);
 
         return view;
     }
 
+    private void initData() {
+        List<EntityStyle> styleList = SalaryDao.getInstance(getActivity()).getStyleList();
+        styles.clear();
+        processNumbers.clear();
+        for (EntityStyle entityStyle : styleList) {
+            styles.add(entityStyle.getStyle());
+            processNumbers.add(entityStyle.getProcessNumber());
+        }
+        Collections.sort(styles);
+        Collections.sort(processNumbers);
+        styles.add(0, "请选择款式");
+    }
+
     private void initView(View view) {
         Log.d(TAG, "initView: ");
-        Spinner spinnerStyle = (Spinner) view.findViewById(R.id.spinner_style);
-        final Spinner spinnerProcessID = (Spinner) view.findViewById(R.id.spinner_process_id);
+        NiceSpinner spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
+        final NiceSpinner spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
         final TextView tvChooseProcess = (TextView) view.findViewById(R.id.text_choose_process);
-        spinnerStyle.setAdapter(new AdapterArray<String>(getActivity(),
-                android.R.layout.simple_list_item_1, styles));
 
-        spinnerStyle.setSelection(styles.size() - 1, true);
-        spinnerStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerStyle.attachDataSource(styles);
+        spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                if (position == styles.size() - 1) return;
                 if (DEBUG) {
                     Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
                 }
@@ -73,10 +91,9 @@ public class FragmentAddProcess extends Fragment {
                 for (int i = 1; i <= processNumbers.get(position); i++) {
                     processIDs.add(i + "");
                 }
-                processIDs.add("请选择工序");
-                spinnerProcessID.setAdapter(new AdapterArray<String>(getActivity(),
-                        android.R.layout.simple_list_item_1, processIDs));
-                spinnerProcessID.setSelection(processIDs.size() - 1, true);
+                processIDs.add(0, "请选择工序");
+                spinnerProcessID.attachDataSource(processIDs);
+                spinnerProcessID.setSelectedIndex(processIDs.size() - 1);
                 if (tvChooseProcess.getVisibility() != View.VISIBLE) {
                     tvChooseProcess.setVisibility(View.VISIBLE);
                 }
@@ -84,28 +101,6 @@ public class FragmentAddProcess extends Fragment {
                     spinnerProcessID.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d(TAG, "onNothingSelected: nothing");
-            }
         });
-    }
-
-    private void queryStyle() {
-        Log.d(TAG, "queryStyle: ");
-        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("style", null, null,
-                null, null, null, null);
-        styles.clear();
-        while (cursor.moveToNext()) {
-            styles.add(cursor.getString(cursor.getColumnIndex("style")));
-            processNumbers.add(cursor.getInt(cursor.getColumnIndex("process_number")));
-        }
-        cursor.close();
-        Collections.sort(styles);
-        styles.add("请选择款式");
-        database.close();
     }
 }

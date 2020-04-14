@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="app" target="1.7" />
-      <module name="SalaryCalculation.app" target="1.7" />
+      <module name="SalaryCalculation.app" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

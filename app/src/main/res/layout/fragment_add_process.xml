@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="选择款式" />
 
-    <Spinner
+    <org.angmarch.views.NiceSpinner
         android:id="@+id/spinner_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="选择工序" />
 
-    <Spinner
+    <org.angmarch.views.NiceSpinner
         android:visibility="gone"
         android:id="@+id/spinner_process_id"
         android:layout_width="match_parent"

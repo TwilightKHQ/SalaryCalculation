@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="选择员工" />
 
-    <Spinner
+    <org.angmarch.views.NiceSpinner
         android:id="@+id/spinner_employee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -24,7 +24,7 @@
         android:text="选择款式"
         android:visibility="gone" />
 
-    <Spinner
+    <org.angmarch.views.NiceSpinner
         android:id="@+id/spinner_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         android:text="选择工序"
         android:visibility="gone" />
 
-    <Spinner
+    <org.angmarch.views.NiceSpinner
         android:id="@+id/spinner_process_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

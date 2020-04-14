@@ -7,16 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.twilightkhq.salarycalculation.Adapter.AdapterArray;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
+import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
+
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,31 +50,44 @@ public class FragmentAddCircuit extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_circuit, container, false);
 
-        queryEmployee();
-        queryStyle();
+        initData();
         initView(view);
 
         return view;
     }
 
+    private void initData() {
+        names.clear();
+        names = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        names.add(0, "请选择员工");
+
+        List<EntityStyle> styleList = SalaryDao.getInstance(getActivity()).getStyleList();
+        styles.clear();
+        processNumbers.clear();
+        for (EntityStyle entityStyle : styleList) {
+            styles.add(entityStyle.getStyle());
+            processNumbers.add(entityStyle.getProcessNumber());
+        }
+        styles.add(0, "请选择款式");
+        Log.d(TAG, "initData: ");
+    }
+
     private void initView(View view) {
-        Spinner spinnerEmployee = (Spinner) view.findViewById(R.id.spinner_employee);
-        final Spinner spinnerStyle = (Spinner) view.findViewById(R.id.spinner_style);
-        final Spinner spinnerProcessID = (Spinner) view.findViewById(R.id.spinner_process_id);
+        NiceSpinner spinnerEmployee = (NiceSpinner) view.findViewById(R.id.spinner_employee);
+        final NiceSpinner spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
+        final NiceSpinner spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
         final TextView tvChooseStyle = (TextView) view.findViewById(R.id.tv_choose_style);
         final TextView tvChooseProcessID = (TextView) view.findViewById(R.id.tv_choose_process_id);
-        spinnerEmployee.setAdapter(new AdapterArray<String>(getActivity(),
-                android.R.layout.simple_list_item_1, names));
-        spinnerEmployee.setSelection(names.size() - 1, true);
-        spinnerEmployee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+        spinnerEmployee.attachDataSource(names);
+        spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                if (position == names.size() - 1) return;
                 if (DEBUG) {
                     Log.d(TAG, "onItemSelected: selected = " + names.get(position));
                 }
-                spinnerStyle.setAdapter(new AdapterArray<String>(getActivity(),
-                        android.R.layout.simple_list_item_1, styles));
-                spinnerStyle.setSelection(styles.size() - 1, true);
+                spinnerStyle.attachDataSource(styles);
                 if (tvChooseStyle.getVisibility() != View.VISIBLE) {
                     tvChooseStyle.setVisibility(View.VISIBLE);
                 }
@@ -80,72 +95,28 @@ public class FragmentAddCircuit extends Fragment {
                     spinnerStyle.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
-        spinnerStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position != styles.size() - 1) {
-                    if (DEBUG) {
-                        Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
-                    }
-                    processIDs.clear();
-                    for (int i = 1; i <= processNumbers.get(position); i++) {
-                        processIDs.add(i + "");
-                    }
-                    processIDs.add("请选择工序");
-                    spinnerProcessID.setAdapter(new AdapterArray<String>(getActivity(),
-                            android.R.layout.simple_list_item_1, processIDs));
-                    spinnerProcessID.setSelection(processIDs.size() - 1, true);
-                    if (tvChooseProcessID.getVisibility() != View.VISIBLE) {
-                        tvChooseProcessID.setVisibility(View.VISIBLE);
-                    }
-                    if (spinnerProcessID.getVisibility() != View.VISIBLE) {
-                        spinnerProcessID.setVisibility(View.VISIBLE);
-                    }
+            public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                if (position == styles.size() - 1) return;
+                if (DEBUG) {
+                    Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
+                }
+                processIDs.clear();
+                for (int i = 1; i <= processNumbers.get(position); i++) {
+                    processIDs.add(i + "");
+                }
+                processIDs.add(0, "请选择工序");
+                spinnerProcessID.attachDataSource(processIDs);
+                spinnerProcessID.setSelectedIndex(processIDs.size() - 1);
+                if (tvChooseProcessID.getVisibility() != View.VISIBLE) {
+                    tvChooseProcessID.setVisibility(View.VISIBLE);
+                }
+                if (spinnerProcessID.getVisibility() != View.VISIBLE) {
+                    spinnerProcessID.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
-
-    }
-
-    private void queryEmployee() {
-        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("employee", null, null,
-                null, null, null, null);
-        names.clear();
-        while (cursor.moveToNext()) {
-            names.add(cursor.getString(cursor.getColumnIndex("name")));
-        }
-        cursor.close();
-        Collections.sort(names);
-        names.add("请选择员工");
-        database.close();
-    }
-
-    private void queryStyle() {
-        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("style", null, null,
-                null, null, null, null);
-        styles.clear();
-        while (cursor.moveToNext()) {
-            styles.add(cursor.getString(cursor.getColumnIndex("style")));
-            processNumbers.add(cursor.getInt(cursor.getColumnIndex("process_number")));
-        }
-        cursor.close();
-        Collections.sort(styles);
-        styles.add("请选择款式");
-        database.close();
     }
 }

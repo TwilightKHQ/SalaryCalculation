@@ -19,16 +19,23 @@ public class SalaryDao {
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug";
 
-    private String dbName;
+    private String dbName = "salary.db";
+    private static SalaryDao instance = null;
 
     private List<String> employeeList = new ArrayList<>();
     private List<EntityStyle> styleList = new ArrayList<>();
     private List<EntityProcess> processList = new ArrayList<>();
     private List<EntityCircuit> circuitList = new ArrayList<>();
 
-    public SalaryDao(Context context, String dbName) {
+    public static SalaryDao getInstance(Context context) {
+        if (instance == null) {
+            instance = new SalaryDao(context);
+        }
+        return instance;
+    }
+
+    private SalaryDao(Context context) {
         this.context = context;
-        this.dbName = dbName;
         queryEmployeeTable();
         queryStyleTable();
         queryProcessTable();
@@ -50,9 +57,10 @@ public class SalaryDao {
     }
 
     private void queryEmployeeTable() {
+        Log.d(TAG, "queryEmployeeTable: ");
         SQLiteDatabase db = getReadableDb(dbName);
         Cursor cursor = db.query("employee", null, null,
-                null, null, null, "style");
+                null, null, null, "name");
         employeeList.clear();
         while (cursor.moveToNext()) {
             employeeList.add(cursor.getString(cursor.getColumnIndex("name")));

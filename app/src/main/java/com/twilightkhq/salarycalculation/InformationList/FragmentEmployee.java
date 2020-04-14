@@ -15,12 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.R;
-import com.twilightkhq.salarycalculation.View.DialogBottom;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,8 +52,15 @@ public class FragmentEmployee extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogBottom dialogBottom = new DialogBottom();
-                dialogBottom.show(getActivity().getSupportFragmentManager(), "dialogBottom");
+                new XPopup.Builder(getContext())
+                        .asBottomList("请选择一项", new String[]{"修改", "删除"},
+                                new OnSelectListener() {
+                                    @Override
+                                    public void onSelect(int position, String text) {
+                                        Toast.makeText(getContext(), "员工" + text, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                        .show();
                 return false;
             }
         });
@@ -68,7 +75,7 @@ public class FragmentEmployee extends Fragment {
 
     private void queryEmployee() {
         SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database =  dbHelper.getReadableDatabase();
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor = database.query("employee", null,
                 null, null, null, null, null);
         names.clear();

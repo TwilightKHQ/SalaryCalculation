@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Adapter.Adapter2FloorNodeTree;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
+import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
 import com.twilightkhq.salarycalculation.Entity.ThreeColNode.FirstNode;
 import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
 import com.twilightkhq.salarycalculation.R;
@@ -29,6 +31,7 @@ public class FragmentEmployeeSalary extends Fragment {
 
     private static int salary = 0;
     private static List<BaseNode> nodeList = new ArrayList<>();
+
     private Adapter2FloorNodeTree adapter = new Adapter2FloorNodeTree();
 
     public FragmentEmployeeSalary() {
@@ -46,44 +49,30 @@ public class FragmentEmployeeSalary extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_employee_salary, container, false);
 
+        initData();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-        queryEmployee();
         adapter.setList(nodeList);
 
         return view;
     }
 
-    private void queryEmployee() {
-        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database =  dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("employee", null,
-                null, null, null, null, "name");
+    private void initData() {
+        List<String> nameList = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        List<EntityCircuit> circuitList = SalaryDao.getInstance(getActivity()).getCircuitList();
         nodeList.clear();
-        while (cursor.moveToNext()) {
-            String name = cursor.getString(cursor.getColumnIndex("name"));
+        for (String name : nameList) {
             List<BaseNode> secondNodeList = new ArrayList<>();
-            queryCircuit(name, secondNodeList);
+            secondNodeList.add(new SecondNode("款式", "工序", "件数"));
+            for (EntityCircuit entityCircuit : circuitList) {
+                if (entityCircuit.getName().equals(name)) {
+                    secondNodeList.add(new SecondNode(entityCircuit.getStyle(),
+                            entityCircuit.getProcessID() + "",
+                            entityCircuit.getNumber() + ""));
+                }
+            }
             nodeList.add(new FirstNode(secondNodeList, name));
         }
-        cursor.close();
-        database.close();
-    }
-
-    private void queryCircuit(String name, List<BaseNode> baseNodeList) {
-        baseNodeList.add(new SecondNode("款式", "工序", "件数"));
-        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("circuit",
-                new String[]{"name", "style", "process_id", "number"}, "name=?",
-                new String[]{name}, null, null, "style");
-        while (cursor.moveToNext()) {
-            baseNodeList.add(new SecondNode(cursor.getString(cursor.getColumnIndex("style")),
-                    cursor.getInt(cursor.getColumnIndex("process_id")) + "",
-                    cursor.getInt(cursor.getColumnIndex("number")) + ""));
-        }
-        cursor.close();
-        database.close();
     }
 }
