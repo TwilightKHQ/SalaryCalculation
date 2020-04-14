@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
+import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
@@ -44,8 +46,8 @@ public class FragmentEmployee extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_employee, container, false);
 
+        initData();
         ListView listView = (ListView) view.findViewById(R.id.list_view);
-
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, names);
         listView.setAdapter(adapter);
@@ -67,23 +69,11 @@ public class FragmentEmployee extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        queryEmployee();
-    }
-
-    private void queryEmployee() {
-        SalaryDBHelper dbHelper = new SalaryDBHelper(getActivity(), dbName, null, 1);
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
-        Cursor cursor = database.query("employee", null,
-                null, null, null, null, null);
+    private void initData() {
+        List<EntityEmployee> employeeList = SalaryDao.getInstance(getActivity()).getEmployeeList();
         names.clear();
-        while (cursor.moveToNext()) {
-            names.add(cursor.getString(cursor.getColumnIndex("name")));
+        for (EntityEmployee entityEmployee : employeeList) {
+            names.add(entityEmployee.getName());
         }
-        cursor.close();
-        Collections.sort(names);
-        database.close();
     }
 }

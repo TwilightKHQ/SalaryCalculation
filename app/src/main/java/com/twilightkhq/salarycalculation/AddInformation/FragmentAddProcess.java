@@ -83,17 +83,16 @@ public class FragmentAddProcess extends Fragment {
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                if (position == styles.size() - 1) return;
+                if (position == 0) return;
                 if (DEBUG) {
                     Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
                 }
                 processIDs.clear();
-                for (int i = 1; i <= processNumbers.get(position); i++) {
+                for (int i = 1; i <= processNumbers.get(position - 1); i++) {
                     processIDs.add(i + "");
                 }
                 processIDs.add(0, "请选择工序");
                 spinnerProcessID.attachDataSource(processIDs);
-                spinnerProcessID.setSelectedIndex(processIDs.size() - 1);
                 if (tvChooseProcess.getVisibility() != View.VISIBLE) {
                     tvChooseProcess.setVisibility(View.VISIBLE);
                 }

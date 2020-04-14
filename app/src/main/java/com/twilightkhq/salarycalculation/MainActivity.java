@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.InformationList.InformationListActivity;
 import com.twilightkhq.salarycalculation.SalaryList.SalaryListActivity;
 import com.twilightkhq.salarycalculation.Utils.AppUtil;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

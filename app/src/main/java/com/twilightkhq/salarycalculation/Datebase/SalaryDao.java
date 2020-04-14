@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
+import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 
@@ -22,7 +23,7 @@ public class SalaryDao {
     private String dbName = "salary.db";
     private static SalaryDao instance = null;
 
-    private List<String> employeeList = new ArrayList<>();
+    private List<EntityEmployee> employeeList = new ArrayList<>();
     private List<EntityStyle> styleList = new ArrayList<>();
     private List<EntityProcess> processList = new ArrayList<>();
     private List<EntityCircuit> circuitList = new ArrayList<>();
@@ -63,7 +64,8 @@ public class SalaryDao {
                 null, null, null, "name");
         employeeList.clear();
         while (cursor.moveToNext()) {
-            employeeList.add(cursor.getString(cursor.getColumnIndex("name")));
+            employeeList.add(new EntityEmployee(cursor.getString(cursor.getColumnIndex("name"))));
+            Log.d(TAG, "queryEmployeeTable: employeeList size = " + employeeList.size());
         }
         cursor.close();
         closeDb(db);
@@ -117,10 +119,10 @@ public class SalaryDao {
         }
     }
 
-    public void insertEmployee(String name) {
+    public void insertEmployee(EntityEmployee entityEmployee) {
         SQLiteDatabase db = getWritableDb(dbName);
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
+        contentValues.put("name", entityEmployee.getName());
         db.insert("employee", null, contentValues);
         closeDb(db);
         queryEmployeeTable();
@@ -162,10 +164,10 @@ public class SalaryDao {
         queryCircuitTable();
     }
 
-    public void deleteEmployee(String name) {
+    public void deleteEmployee(EntityEmployee entityEmployee) {
         SQLiteDatabase db = getWritableDb(dbName);
-        db.delete("employee", "name=?", new String[]{name});
-        db.delete("circuit", "name=?", new String[]{name});
+        db.delete("employee", "name=?", new String[]{entityEmployee.getName()});
+        db.delete("circuit", "name=?", new String[]{entityEmployee.getName()});
         closeDb(db);
         queryEmployeeTable();
         queryCircuitTable();
@@ -198,12 +200,12 @@ public class SalaryDao {
         queryCircuitTable();
     }
 
-    public void updateEmployee(String oldName, String newName) {
+    public void updateEmployee(EntityEmployee oldEmployee, EntityEmployee newEmployee) {
         SQLiteDatabase db = getWritableDb(dbName);
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", newName);
-        db.update("employee", contentValues, "name=?", new String[]{oldName});
-        db.update("circuit", contentValues, "name=?", new String[]{oldName});
+        contentValues.put("name", newEmployee.getName());
+        db.update("employee", contentValues, "name=?", new String[]{oldEmployee.getName()});
+        db.update("circuit", contentValues, "name=?", new String[]{oldEmployee.getName()});
         db.close();
         queryEmployeeTable();
         queryCircuitTable();
@@ -253,7 +255,8 @@ public class SalaryDao {
         queryCircuitTable();
     }
 
-    public List<String> getEmployeeList() {
+    public List<EntityEmployee> getEmployeeList() {
+        Log.d(TAG, "getEmployeeList: employeeList " + employeeList.size());
         return employeeList;
     }
 

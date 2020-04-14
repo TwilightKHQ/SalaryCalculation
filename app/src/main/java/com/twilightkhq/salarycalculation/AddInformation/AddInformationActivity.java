@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.twilightkhq.salarycalculation.Adapter.AdapterFragment;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
+import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
@@ -108,7 +109,7 @@ public class AddInformationActivity extends AppCompatActivity implements View.On
             switch (type) {
                 case 0:
                     EditText editEmployee = (EditText) fragmentView.findViewById(R.id.edit_employee);
-                    SalaryDao.getInstance(this).insertEmployee(editEmployee.getText().toString());
+                    SalaryDao.getInstance(this).insertEmployee(new EntityEmployee(editEmployee.getText().toString()));
                     editEmployee.setText("");
                     break;
                 case 1:

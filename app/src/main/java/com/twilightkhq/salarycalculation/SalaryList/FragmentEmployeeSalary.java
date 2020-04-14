@@ -17,6 +17,7 @@ import com.twilightkhq.salarycalculation.Adapter.Adapter2FloorNodeTree;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
+import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.ThreeColNode.FirstNode;
 import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
 import com.twilightkhq.salarycalculation.R;
@@ -59,20 +60,20 @@ public class FragmentEmployeeSalary extends Fragment {
     }
 
     private void initData() {
-        List<String> nameList = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        List<EntityEmployee> employeeList = SalaryDao.getInstance(getActivity()).getEmployeeList();
         List<EntityCircuit> circuitList = SalaryDao.getInstance(getActivity()).getCircuitList();
         nodeList.clear();
-        for (String name : nameList) {
+        for (EntityEmployee entityEmployee : employeeList) {
             List<BaseNode> secondNodeList = new ArrayList<>();
             secondNodeList.add(new SecondNode("款式", "工序", "件数"));
             for (EntityCircuit entityCircuit : circuitList) {
-                if (entityCircuit.getName().equals(name)) {
+                if (entityCircuit.getName().equals(entityEmployee.getName())) {
                     secondNodeList.add(new SecondNode(entityCircuit.getStyle(),
                             entityCircuit.getProcessID() + "",
                             entityCircuit.getNumber() + ""));
                 }
             }
-            nodeList.add(new FirstNode(secondNodeList, name));
+            nodeList.add(new FirstNode(secondNodeList, entityEmployee.getName()));
         }
     }
 }

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
 
@@ -57,10 +58,12 @@ public class FragmentAddCircuit extends Fragment {
     }
 
     private void initData() {
+        List<EntityEmployee> employeeList = SalaryDao.getInstance(getActivity()).getEmployeeList();
         names.clear();
-        names = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        for (EntityEmployee entityEmployee : employeeList) {
+            names.add(entityEmployee.getName());
+        }
         names.add(0, "请选择员工");
-
         List<EntityStyle> styleList = SalaryDao.getInstance(getActivity()).getStyleList();
         styles.clear();
         processNumbers.clear();
@@ -83,7 +86,7 @@ public class FragmentAddCircuit extends Fragment {
         spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                if (position == names.size() - 1) return;
+                if (position == 0) return;
                 if (DEBUG) {
                     Log.d(TAG, "onItemSelected: selected = " + names.get(position));
                 }
@@ -99,17 +102,16 @@ public class FragmentAddCircuit extends Fragment {
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                if (position == styles.size() - 1) return;
+                if (position == 0) return;
                 if (DEBUG) {
                     Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
                 }
                 processIDs.clear();
-                for (int i = 1; i <= processNumbers.get(position); i++) {
+                for (int i = 1; i <= processNumbers.get(position - 1); i++) {
                     processIDs.add(i + "");
                 }
                 processIDs.add(0, "请选择工序");
                 spinnerProcessID.attachDataSource(processIDs);
-                spinnerProcessID.setSelectedIndex(processIDs.size() - 1);
                 if (tvChooseProcessID.getVisibility() != View.VISIBLE) {
                     tvChooseProcessID.setVisibility(View.VISIBLE);
                 }
