@@ -1,9 +1,9 @@
-package com.twilightkhq.salarycalculation.Provider.SalaryProvider;
+package com.twilightkhq.salarycalculation.Provider;
 
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -11,13 +11,15 @@ import androidx.core.view.ViewCompat;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.List;
 
-public class FirstProvider extends BaseNodeProvider {
+public class EmployeeTitleProvider extends BaseNodeProvider {
 
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug--";
@@ -53,14 +55,27 @@ public class FirstProvider extends BaseNodeProvider {
     }
 
     @Override
-    public void onClick(@NonNull BaseViewHolder helper, @NonNull View view, BaseNode data, int position) {
+    public void onClick(@NonNull BaseViewHolder helper, @NonNull View view,
+                        BaseNode data, int position) {
+
         // 这里使用payload进行增量刷新（避免整个item刷新导致的闪烁，不自然）
         getAdapter().expandOrCollapse(position, true, true, AdapterStyleNodeTree.EXPAND_COLLAPSE_PAYLOAD);
+
+        super.onClick(helper, view, data, position);
     }
 
     @Override
-    public boolean onLongClick(BaseViewHolder helper, View view, BaseNode data, int position) {
-        Log.d(TAG, "onLongClick: 长按 " + position);
+    public boolean onLongClick(@NonNull BaseViewHolder helper, @NonNull View view,
+                               BaseNode data, int position) {
+        new XPopup.Builder(getContext())
+                .asBottomList("请选择一项", new String[]{"修改", "删除"},
+                        new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .show();
         return super.onLongClick(helper, view, data, position);
     }
 

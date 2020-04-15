@@ -1,5 +1,6 @@
 package com.twilightkhq.salarycalculation.InformationList;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.AddInformation.FragmentAddProcess;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
@@ -24,12 +27,15 @@ import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragmentEmployee extends Fragment {
 
-    private static final String dbName = "salary.db";
+    private SalaryDao salaryDao;
+    private ArrayAdapter<String> adapter;
     private static List<String> names = new ArrayList<>();
+
 
     public FragmentEmployee() {
         // Required empty public constructor
@@ -48,18 +54,31 @@ public class FragmentEmployee extends Fragment {
 
         initData();
         ListView listView = (ListView) view.findViewById(R.id.list_view);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+        adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, names);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long id) {
                 new XPopup.Builder(getContext())
                         .asBottomList("请选择一项", new String[]{"修改", "删除"},
                                 new OnSelectListener() {
                                     @Override
                                     public void onSelect(int position, String text) {
-                                        Toast.makeText(getContext(), "员工" + text, Toast.LENGTH_SHORT).show();
+                                        if (position == 0) {
+                                            Intent intent = new Intent(getActivity(), AddInformationActivity.class);
+                                            intent.putExtra("type", 0);
+                                            intent.putExtra("name", names.get(i));
+                                            startActivityForResult(intent, 10);
+                                        }
+                                        if (position == 1) {
+                                            salaryDao.deleteEmployee(
+                                                    new EntityEmployee(names.get(i))
+                                            );
+                                            names.remove(names.get(i));
+                                            adapter.notifyDataSetChanged();
+                                            initData();
+                                        }
                                     }
                                 })
                         .show();
@@ -69,8 +88,16 @@ public class FragmentEmployee extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+        adapter.notifyDataSetChanged();
+    }
+
     private void initData() {
-        List<EntityEmployee> employeeList = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        salaryDao = SalaryDao.getInstance(getActivity());
+        List<EntityEmployee> employeeList = salaryDao.getEmployeeList();
         names.clear();
         for (EntityEmployee entityEmployee : employeeList) {
             names.add(entityEmployee.getName());

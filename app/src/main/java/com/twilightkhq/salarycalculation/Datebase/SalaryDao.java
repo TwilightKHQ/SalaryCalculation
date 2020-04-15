@@ -67,7 +67,6 @@ public class SalaryDao {
         employeeList.clear();
         while (cursor.moveToNext()) {
             employeeList.add(new EntityEmployee(cursor.getString(cursor.getColumnIndex("name"))));
-            Log.d(TAG, "queryEmployeeTable: employeeList size = " + employeeList.size());
         }
         cursor.close();
         closeDb(db);
@@ -261,7 +260,6 @@ public class SalaryDao {
     }
 
     public List<EntityEmployee> getEmployeeList() {
-        Log.d(TAG, "getEmployeeList: employeeList " + employeeList.size());
         Collections.sort(employeeList, new Comparator<EntityEmployee>() {
             @Override
             public int compare(EntityEmployee o1, EntityEmployee o2) {

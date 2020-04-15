@@ -1,8 +1,11 @@
-package com.twilightkhq.salarycalculation.Provider.ThreeColProvider;
+package com.twilightkhq.salarycalculation.Provider;
 
+import android.content.Intent;
+import android.service.quicksettings.Tile;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,13 +16,18 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
-import com.twilightkhq.salarycalculation.Adapter.Adapter2FloorNodeTree;
-import com.twilightkhq.salarycalculation.Entity.ThreeColNode.FirstNode;
+import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
+import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.AddInformation.FragmentAddProcess;
+import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
+import com.twilightkhq.salarycalculation.Entity.EntityStyle;
+import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
+import com.twilightkhq.salarycalculation.Entity.SalaryNode.FirstNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.List;
 
-public class FirstProvider extends BaseNodeProvider {
+public class StyleTitleProvider extends BaseNodeProvider {
 
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug--";
@@ -37,7 +45,7 @@ public class FirstProvider extends BaseNodeProvider {
 
     @Override
     public void convert(BaseViewHolder baseViewHolder, BaseNode baseNode) {
-        FirstNode entity = (FirstNode) baseNode;
+        TitleNode entity = (TitleNode) baseNode;
         baseViewHolder.setText(R.id.title, entity.getTitle());
         baseViewHolder.setImageResource(R.id.iv, R.mipmap.arrow_r);
 
@@ -47,7 +55,7 @@ public class FirstProvider extends BaseNodeProvider {
     @Override
     public void convert(@NonNull BaseViewHolder helper, BaseNode item, List<?> payloads) {
         for (Object payload : payloads) {
-            if (payload instanceof Integer && (int) payload == Adapter2FloorNodeTree.EXPAND_COLLAPSE_PAYLOAD) {
+            if (payload instanceof Integer && (int) payload == AdapterStyleNodeTree.EXPAND_COLLAPSE_PAYLOAD) {
                 // 增量刷新，使用动画变化箭头
                 setArrowSpin(helper, item, true);
             }
@@ -55,10 +63,11 @@ public class FirstProvider extends BaseNodeProvider {
     }
 
     @Override
-    public void onClick(BaseViewHolder helper, View view, BaseNode data, int position) {
+    public void onClick(@NonNull BaseViewHolder helper, @NonNull View view,
+                        BaseNode data, int position) {
 
         // 这里使用payload进行增量刷新（避免整个item刷新导致的闪烁，不自然）
-        getAdapter().expandOrCollapse(position, true, true, Adapter2FloorNodeTree.EXPAND_COLLAPSE_PAYLOAD);
+        getAdapter().expandOrCollapse(position, true, true, AdapterStyleNodeTree.EXPAND_COLLAPSE_PAYLOAD);
 
         super.onClick(helper, view, data, position);
     }
@@ -66,12 +75,25 @@ public class FirstProvider extends BaseNodeProvider {
     @Override
     public boolean onLongClick(@NonNull BaseViewHolder helper, @NonNull View view,
                                BaseNode data, int position) {
+        TitleNode titleNode = (TitleNode) data;
         new XPopup.Builder(getContext())
                 .asBottomList("请选择一项", new String[]{"修改", "删除"},
                         new OnSelectListener() {
                             @Override
-                            public void onSelect(int position, String text) {
-                                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                            public void onSelect(int p, String text) {
+                                if (p == 0) {
+                                    Intent intent = new Intent(getContext(), AddInformationActivity.class);
+                                    intent.putExtra("type", 1);
+                                    intent.putExtra("style", titleNode.getTitle());
+                                    getContext().startActivity(intent);
+                                }
+                                if (p == 1) {
+                                    SalaryDao.getInstance(getContext()).deleteStyle(new EntityStyle(
+                                            titleNode.getTitle(), 0, 0, 0));
+                                    getAdapter().collapseAndChild(position);
+                                    getAdapter().getData().remove(position);
+                                    getAdapter().notifyDataSetChanged();
+                                }
                             }
                         })
                 .show();
@@ -79,7 +101,7 @@ public class FirstProvider extends BaseNodeProvider {
     }
 
     private void setArrowSpin(BaseViewHolder helper, BaseNode data, boolean isAnimate) {
-        FirstNode entity = (FirstNode) data;
+        TitleNode entity = (TitleNode) data;
 
         ImageView imageView = helper.getView(R.id.iv);
 

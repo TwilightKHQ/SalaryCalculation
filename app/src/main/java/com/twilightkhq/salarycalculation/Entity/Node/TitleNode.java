@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.Entity.ThreeColNode;
+package com.twilightkhq.salarycalculation.Entity.Node;
 
 import androidx.annotation.Nullable;
 
@@ -7,12 +7,12 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 
 import java.util.List;
 
-public class FirstNode extends BaseExpandNode {
+public class TitleNode extends BaseExpandNode {
 
     private List<BaseNode> childNode;
     private String title;
 
-    public FirstNode(List<BaseNode> childNode, String title) {
+    public TitleNode(List<BaseNode> childNode, String title) {
         this.childNode = childNode;
         this.title = title;
 

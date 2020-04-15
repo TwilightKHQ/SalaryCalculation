@@ -1,5 +1,6 @@
 package com.twilightkhq.salarycalculation.AddInformation;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,14 +26,17 @@ import java.util.List;
 public class FragmentAddStyle extends Fragment implements View.OnClickListener {
 
     private static boolean DEBUG = true;
-    private static String TAG = "--zzq--debug";
+    private static String TAG = "--zzq--" + FragmentAddStyle.class.getSimpleName();
 
     private boolean styleFlag = false;
     private boolean numberFlag = false;
     private boolean processNumberFlag = false;
     private boolean processPriceFlag = false;
     private SalaryDao salaryDao;
+    private EntityStyle oldStyle;
+    private SharedPreferences mSharedPreferences;
 
+    private Button button;
     private EditText editStyle;
     private EditText editNumber;
     private EditText editStylePrice;
@@ -53,15 +57,28 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_style, container, false);
 
+        initData();
         initView(view);
 
         return view;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.clear();
+        editor.putString("action", "add");
+        editor.apply();
+    }
+
+    private void initData() {
+        salaryDao = SalaryDao.getInstance(getActivity());
+    }
+
     private void initView(View view) {
-        Button button = (Button) view.findViewById(R.id.bt_change);
+        button = (Button) view.findViewById(R.id.bt_change);
         button.setOnClickListener(this);
-        button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
 
         editStyle = (EditText) view.findViewById(R.id.edit_style);
         editNumber = (EditText) view.findViewById(R.id.edit_number);
@@ -139,22 +156,37 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
                 button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
             }
         });
+
+        intentAction();
+        button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
-            salaryDao = SalaryDao.getInstance(getActivity());
-            if (findStyle(editStyle.getText().toString())) {
-                Toast.makeText(getActivity(), "款式重名", Toast.LENGTH_SHORT).show();
-                return;
+            if (button.getText().equals(getString(R.string.add))) {
+                if (findStyle(editStyle.getText().toString())) {
+                    Toast.makeText(getActivity(), "款式重名", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                salaryDao.insertStyle(new EntityStyle(
+                        editStyle.getText().toString(),
+                        Integer.parseInt(editProcessNumber.getText().toString()),
+                        SomeUtils.handlePrice(editStylePrice.getText().toString()),
+                        Integer.parseInt(editNumber.getText().toString())
+                ));
+            } else if (button.getText().equals(getString(R.string.change))) {
+                salaryDao.updateStyle(oldStyle, new EntityStyle(
+                        editStyle.getText().toString(),
+                        Integer.parseInt(editProcessNumber.getText().toString()),
+                        SomeUtils.handlePrice(editStylePrice.getText().toString()),
+                        Integer.parseInt(editNumber.getText().toString())
+                ));
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString("action", "add");
+                editor.apply();
+                getActivity().onBackPressed();
             }
-            salaryDao.insertStyle(new EntityStyle(
-                    editStyle.getText().toString(),
-                    Integer.parseInt(editProcessNumber.getText().toString()),
-                    SomeUtils.handlePrice(editStylePrice.getText().toString()),
-                    Integer.parseInt(editNumber.getText().toString())
-            ));
             editStyle.setText("");
             editNumber.setText("");
             editStylePrice.setText("");
@@ -168,5 +200,29 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
             if (entityStyle.getStyle().equals(style)) return true;
         }
         return false;
+    }
+
+    private EntityStyle findEntityStyle(String style) {
+        List<EntityStyle> styleList = salaryDao.getStyleList();
+        for (EntityStyle entityStyle : styleList) {
+            if (entityStyle.getStyle().equals(style)) return entityStyle;
+        }
+        return null;
+    }
+
+    private void intentAction() {
+        mSharedPreferences = getActivity().getSharedPreferences("shared",
+                AddInformationActivity.MODE_PRIVATE);
+        if ("change".equals(mSharedPreferences.getString("action", "add"))
+                && mSharedPreferences.getInt("type", -1) == 1) {
+            button.setText(R.string.change);
+            oldStyle = findEntityStyle(mSharedPreferences.getString("oldStyle", ""));
+            if (oldStyle != null) {
+                editStyle.setText(oldStyle.getStyle());
+                editNumber.setText(oldStyle.getNumber() + "");
+                editProcessNumber.setText(oldStyle.getProcessNumber() + "");
+                editStylePrice.setText(SomeUtils.priceToShow(oldStyle.getStylePrice() + ""));
+            }
+        }
     }
 }

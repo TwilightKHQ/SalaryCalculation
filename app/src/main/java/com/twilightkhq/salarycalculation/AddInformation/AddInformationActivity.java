@@ -1,9 +1,12 @@
 package com.twilightkhq.salarycalculation.AddInformation;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,7 +33,9 @@ import java.util.List;
 public class AddInformationActivity extends AppCompatActivity {
 
     private static boolean DEBUG = true;
-    private static String TAG = "--zzq--debug";
+    private static String TAG = "--zzq--" + AddInformationActivity.class.getSimpleName();
+
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +46,8 @@ public class AddInformationActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
 
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> titleList = new ArrayList<>();
@@ -58,5 +63,42 @@ public class AddInformationActivity extends AppCompatActivity {
                 AddInformationActivity.this, fragmentList, titleList);
         viewPager.setAdapter(adapterFragment);
         tabLayout.setupWithViewPager(viewPager);
+
+        intentAction();
+    }
+
+    private void intentAction() {
+        Intent intent = getIntent();
+        Log.d(TAG, "intentAction: intent" + intent);
+        int type = intent.getIntExtra("type", -1);
+        if (type == -1) return;
+        viewPager.setCurrentItem(type);
+        SharedPreferences mSharedPreferences = getSharedPreferences("shared",
+                AddInformationActivity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString("action", "change");
+        editor.putInt("type", type);
+        switch (type) {
+            case 0:
+                Log.d(TAG, "intentAction: 修改员工");
+                editor.putString("oldName", intent.getStringExtra("name"));
+                break;
+            case 1:
+                Log.d(TAG, "intentAction: 修改款式");
+                editor.putString("oldStyle", intent.getStringExtra("style"));
+                break;
+            case 2:
+                Log.d(TAG, "intentAction: 修改工序");
+                editor.putString("oldStyle", intent.getStringExtra("style"));
+                editor.putString("oldProcessID", intent.getStringExtra("processID"));
+                break;
+            case 3:
+                Log.d(TAG, "intentAction: 修改流程");
+                editor.putString("oldName", intent.getStringExtra("name"));
+                editor.putString("oldStyle", intent.getStringExtra("style"));
+                editor.putString("oldProcessID", intent.getStringExtra("processID"));
+                break;
+        }
+        editor.apply();
     }
 }
