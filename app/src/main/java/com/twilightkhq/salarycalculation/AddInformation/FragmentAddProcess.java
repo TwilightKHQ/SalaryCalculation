@@ -41,8 +41,9 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
 
     private boolean processPriceFlag = false;
     private List<String> styles = new ArrayList<>();
-    private List<Integer> processNumbers = new ArrayList<>();
+    private List<String> numbers = new ArrayList<>();
     private List<String> processIDs = new ArrayList<>();
+    private List<Integer> processNumbers = new ArrayList<>();
 
     private NiceSpinner spinnerStyle;
     private NiceSpinner spinnerProcessID;
@@ -76,6 +77,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         processNumbers.clear();
         for (EntityStyle entityStyle : styleList) {
             styles.add(entityStyle.getStyle());
+            numbers.add(entityStyle.getNumber() + "");
             processNumbers.add(entityStyle.getProcessNumber());
         }
         Collections.sort(styles);
@@ -115,6 +117,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                 if (spinnerProcessID.getVisibility() != View.VISIBLE) {
                     spinnerProcessID.setVisibility(View.VISIBLE);
                 }
+                editNumber.setText(numbers.get(position - 1));
             }
         });
         editProcessPrice.addTextChangedListener(new TextWatcher() {

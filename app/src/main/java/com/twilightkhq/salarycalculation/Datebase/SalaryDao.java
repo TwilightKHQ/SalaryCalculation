@@ -159,7 +159,7 @@ public class SalaryDao {
         contentValues.put("process_id", entityCircuit.getProcessID());
         contentValues.put("style", entityCircuit.getStyle());
         contentValues.put("number", entityCircuit.getNumber());
-        db.insert("process", null, contentValues);
+        db.insert("circuit", null, contentValues);
         closeDb(db);
         queryCircuitTable();
     }

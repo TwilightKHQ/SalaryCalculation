@@ -87,9 +87,6 @@ public class AddInformationActivity extends AppCompatActivity {
     }
 
     private void insertData(int type) {
-        if (DEBUG) {
-            Log.d(TAG, "insertEmployee: 插入信息");
-        }
         View fragmentView = adapterFragment.getItem(type).getView();
         if (fragmentView != null) {
             NiceSpinner spinnerStyle;
@@ -132,17 +129,17 @@ public class AddInformationActivity extends AppCompatActivity {
 //                    editProcessPrice.setText("");
                     break;
                 case 3:
-                    NiceSpinner spinnerEmployee = (NiceSpinner) fragmentView.findViewById(R.id.spinner_employee);
-                    spinnerStyle = (NiceSpinner) fragmentView.findViewById(R.id.spinner_style);
-                    spinnerProcessID = (NiceSpinner) fragmentView.findViewById(R.id.spinner_process_id);
-                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
-                    SalaryDao.getInstance(this).insertCircuit(new EntityCircuit(
-                            spinnerEmployee.getSelectedItem().toString(),
-                            spinnerStyle.getSelectedItem().toString(),
-                            Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
-                            Integer.parseInt(editNumber.getText().toString())
-                    ));
-                    editNumber.setText("");
+//                    NiceSpinner spinnerEmployee = (NiceSpinner) fragmentView.findViewById(R.id.spinner_employee);
+//                    spinnerStyle = (NiceSpinner) fragmentView.findViewById(R.id.spinner_style);
+//                    spinnerProcessID = (NiceSpinner) fragmentView.findViewById(R.id.spinner_process_id);
+//                    editNumber = (EditText) fragmentView.findViewById(R.id.edit_number);
+//                    SalaryDao.getInstance(this).insertCircuit(new EntityCircuit(
+//                            spinnerEmployee.getSelectedItem().toString(),
+//                            spinnerStyle.getSelectedItem().toString(),
+//                            Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
+//                            Integer.parseInt(editNumber.getText().toString())
+//                    ));
+//                    editNumber.setText("");
                     break;
             }
         }

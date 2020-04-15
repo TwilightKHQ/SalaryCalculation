@@ -39,6 +39,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="件数" />
+
+        <EditText
+            android:id="@+id/edit_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入该工序件数"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="单价" />
 
         <EditText
@@ -47,18 +59,6 @@
             android:layout_height="wrap_content"
             android:hint="请输入该工序的单价"
             android:inputType="numberDecimal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="件数" />
-
-        <EditText
-            android:id="@+id/edit_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入该工序的单件价格"
-            android:inputType="number" />
 
     </LinearLayout>
 
