@@ -41,7 +41,8 @@ public class SalaryDBHelper extends SQLiteOpenHelper {
             + "name varchar,"
             + "style varchar,"
             + "process_id int,"
-            + "number int"
+            + "number int,"
+            + "process_price int"
             + ")";
 
     public SalaryDBHelper(@Nullable Context context, @Nullable String name,

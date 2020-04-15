@@ -12,6 +12,8 @@ import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SalaryDao {
@@ -107,10 +109,13 @@ public class SalaryDao {
                 null, null, null, "name,style,process_id");
         circuitList.clear();
         while (cursor.moveToNext()) {
-            circuitList.add(new EntityCircuit(cursor.getString(cursor.getColumnIndex("name")),
+            circuitList.add(new EntityCircuit(
+                    cursor.getString(cursor.getColumnIndex("name")),
                     cursor.getString(cursor.getColumnIndex("style")),
                     cursor.getInt(cursor.getColumnIndex("process_id")),
-                    cursor.getInt(cursor.getColumnIndex("number"))));
+                    cursor.getInt(cursor.getColumnIndex("number")),
+                    cursor.getInt(cursor.getColumnIndex("process_price"))
+            ));
         }
         cursor.close();
         closeDb(db);
@@ -257,10 +262,22 @@ public class SalaryDao {
 
     public List<EntityEmployee> getEmployeeList() {
         Log.d(TAG, "getEmployeeList: employeeList " + employeeList.size());
+        Collections.sort(employeeList, new Comparator<EntityEmployee>() {
+            @Override
+            public int compare(EntityEmployee o1, EntityEmployee o2) {
+                return o2.getName().compareTo(o1.getName());
+            }
+        });
         return employeeList;
     }
 
     public List<EntityStyle> getStyleList() {
+        Collections.sort(styleList, new Comparator<EntityStyle>() {
+            @Override
+            public int compare(EntityStyle o1, EntityStyle o2) {
+                return o2.getStyle().compareTo(o1.getStyle());
+            }
+        });
         return styleList;
     }
 

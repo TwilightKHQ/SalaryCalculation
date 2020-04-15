@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,11 +38,12 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug";
 
+    private SalaryDao salaryDao;
     private boolean numberFlag = false;
     private static List<String> names = new ArrayList<>();
     private static List<String> styles = new ArrayList<>();
-    private static List<Integer> processNumbers = new ArrayList<>();
     private static List<String> processIDs = new ArrayList<>();
+    private static List<Integer> processNumbers = new ArrayList<>();
 
     private NiceSpinner spinnerEmployee;
     private NiceSpinner spinnerStyle;
@@ -70,13 +72,14 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     }
 
     private void initData() {
-        List<EntityEmployee> employeeList = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        salaryDao = SalaryDao.getInstance(getActivity());
+        List<EntityEmployee> employeeList = salaryDao.getEmployeeList();
         names.clear();
         for (EntityEmployee entityEmployee : employeeList) {
             names.add(entityEmployee.getName());
         }
         names.add(0, "请选择员工");
-        List<EntityStyle> styleList = SalaryDao.getInstance(getActivity()).getStyleList();
+        List<EntityStyle> styleList = salaryDao.getStyleList();
         styles.clear();
         processNumbers.clear();
         for (EntityStyle entityStyle : styleList) {
@@ -161,13 +164,45 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
-            SalaryDao.getInstance(getActivity()).insertCircuit(new EntityCircuit(
+            int price =  findProcessPrice(spinnerStyle.getSelectedItem().toString(),
+                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()));
+            if (price == 1000000) {
+                Toast.makeText(getActivity(), "未查到对应工序价格", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (findCircuit(spinnerEmployee.getSelectedItem().toString(),
+                    spinnerStyle.getSelectedItem().toString(),
+                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()))) {
+                Toast.makeText(getActivity(), "重复, 请到信息列表中修改！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            salaryDao.insertCircuit(new EntityCircuit(
                     spinnerEmployee.getSelectedItem().toString(),
                     spinnerStyle.getSelectedItem().toString(),
                     Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
-                    Integer.parseInt(editNumber.getText().toString())
+                    Integer.parseInt(editNumber.getText().toString()),
+                    price
             ));
             editNumber.setText("");
         }
+    }
+
+    private int findProcessPrice(String style, int processID) {
+        List<EntityProcess> processList = salaryDao.getProcessList();
+        for (EntityProcess entityProcess : processList) {
+            if (entityProcess.getStyle().equals(style) &&entityProcess.getProcessID() == processID) {
+                return entityProcess.getProcessPrice();
+            }
+        }
+        return 100000;
+    }
+
+    private boolean findCircuit(String name, String style, int processID) {
+        List<EntityCircuit> circuitList = salaryDao.getCircuitList();
+        for (EntityCircuit entityCircuit : circuitList) {
+            if (entityCircuit.getName().equals(name) && entityCircuit.getStyle().equals(style)
+            && entityCircuit.getProcessID() == processID) return true;
+        }
+        return false;
     }
 }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,8 @@ import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
 import com.twilightkhq.salarycalculation.Utils.SomeUtils;
 
+import java.util.List;
+
 public class FragmentAddStyle extends Fragment implements View.OnClickListener {
 
     private static boolean DEBUG = true;
@@ -28,6 +31,7 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
     private boolean numberFlag = false;
     private boolean processNumberFlag = false;
     private boolean processPriceFlag = false;
+    private SalaryDao salaryDao;
 
     private EditText editStyle;
     private EditText editNumber;
@@ -140,7 +144,12 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
-            SalaryDao.getInstance(getActivity()).insertStyle(new EntityStyle(
+            salaryDao = SalaryDao.getInstance(getActivity());
+            if (findStyle(editStyle.getText().toString())) {
+                Toast.makeText(getActivity(), "款式重名", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            salaryDao.insertStyle(new EntityStyle(
                     editStyle.getText().toString(),
                     Integer.parseInt(editProcessNumber.getText().toString()),
                     SomeUtils.handlePrice(editStylePrice.getText().toString()),
@@ -151,5 +160,13 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
             editStylePrice.setText("");
             editProcessNumber.setText("");
         }
+    }
+
+    private boolean findStyle(String style) {
+        List<EntityStyle> styleList = salaryDao.getStyleList();
+        for (EntityStyle entityStyle : styleList) {
+            if (entityStyle.getStyle().equals(style)) return true;
+        }
+        return false;
     }
 }

@@ -28,13 +28,14 @@ import com.twilightkhq.salarycalculation.Entity.ThreeColNode.SecondNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FragmentStyle extends Fragment {
 
-    private static final String dbName = "salary.db";
-    private Adapter2FloorNodeTree adapter = new Adapter2FloorNodeTree();
     private static List<FirstNode> nodeList = new ArrayList<>();
+    private Adapter2FloorNodeTree adapter = new Adapter2FloorNodeTree();
 
     public FragmentStyle() {
         // Required empty public constructor
@@ -102,5 +103,11 @@ public class FragmentStyle extends Fragment {
             }
             nodeList.add(new FirstNode(secondNodeList, entityStyle.getStyle()));
         }
+        Collections.sort(nodeList, new Comparator<FirstNode>() {
+            @Override
+            public int compare(FirstNode o1, FirstNode o2) {
+                return o2.getTitle().compareTo(o1.getTitle());
+            }
+        });
     }
 }

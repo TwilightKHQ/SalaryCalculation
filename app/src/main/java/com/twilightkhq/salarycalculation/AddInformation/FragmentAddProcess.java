@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -39,6 +40,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--debug";
 
+    private SalaryDao salaryDao;
     private boolean processPriceFlag = false;
     private List<String> styles = new ArrayList<>();
     private List<String> numbers = new ArrayList<>();
@@ -72,7 +74,8 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     }
 
     private void initData() {
-        List<EntityStyle> styleList = SalaryDao.getInstance(getActivity()).getStyleList();
+        salaryDao = SalaryDao.getInstance(getActivity());
+        List<EntityStyle> styleList = salaryDao.getStyleList();
         styles.clear();
         processNumbers.clear();
         for (EntityStyle entityStyle : styleList) {
@@ -80,8 +83,6 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
             numbers.add(entityStyle.getNumber() + "");
             processNumbers.add(entityStyle.getProcessNumber());
         }
-        Collections.sort(styles);
-        Collections.sort(processNumbers);
         styles.add(0, "请选择款式");
     }
 
@@ -143,7 +144,12 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
-            SalaryDao.getInstance(getActivity()).insertProcess(new EntityProcess(
+            if (findProcess(spinnerStyle.getSelectedItem().toString(),
+                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()))) {
+                Toast.makeText(getActivity(), "该工序已录入", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            salaryDao.insertProcess(new EntityProcess(
                     spinnerStyle.getSelectedItem().toString(),
                     Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
                     SomeUtils.handlePrice(editProcessPrice.getText().toString()),
@@ -152,5 +158,14 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
             editNumber.setText("");
             editProcessPrice.setText("");
         }
+    }
+
+    private boolean findProcess(String style, int processID) {
+        List<EntityProcess> processList = salaryDao.getProcessList();
+        for (EntityProcess entityProcess : processList) {
+            if (entityProcess.getStyle().equals(style) && entityProcess.getProcessID() == processID)
+                return true;
+        }
+        return false;
     }
 }

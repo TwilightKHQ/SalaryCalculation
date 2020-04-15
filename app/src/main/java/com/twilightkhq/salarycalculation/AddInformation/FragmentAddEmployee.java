@@ -21,6 +21,8 @@ import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.R;
 
+import java.util.List;
+
 public class FragmentAddEmployee extends Fragment implements View.OnClickListener {
 
     private static boolean DEBUG = true;
@@ -77,10 +79,22 @@ public class FragmentAddEmployee extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
+            if (findPersonName(editEmployee.getText().toString())) {
+                Toast.makeText(getActivity(), "员工重名", Toast.LENGTH_SHORT).show();
+                return;
+            }
             SalaryDao.getInstance(getActivity()).insertEmployee(new EntityEmployee(
-                    editEmployee.getText().toString())
-            );
+                    editEmployee.getText().toString()
+            ));
             editEmployee.setText("");
         }
+    }
+
+    private boolean findPersonName(String name) {
+        List<EntityEmployee> employeeList = SalaryDao.getInstance(getActivity()).getEmployeeList();
+        for (EntityEmployee entityEmployee : employeeList) {
+            if (entityEmployee.getName().equals(name)) return true;
+        }
+        return false;
     }
 }
