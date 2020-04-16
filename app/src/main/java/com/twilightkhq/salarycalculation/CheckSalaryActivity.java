@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,6 +66,7 @@ public class CheckSalaryActivity extends AppCompatActivity {
             }
 
             TextView textStylePrice = new TextView(this);
+            textStylePrice.setTextSize(16);
             layoutStyle.addView(textStylePrice);
             StringBuilder sb = new StringBuilder();
 
@@ -84,10 +86,14 @@ public class CheckSalaryActivity extends AppCompatActivity {
     private void checkProcess() {
         for (EntityStyle entityStyle : styleList) {
             TextView textStyle = new TextView(this);
+            textStyle.setTextSize(16);
             layoutProcess.addView(textStyle);
             textStyle.setText(entityStyle.getStyle());
+            textStyle.setGravity(Gravity.CENTER);
+            textStyle.getPaint().setFakeBoldText(true);
             for (int i = 1; i <= entityStyle.getProcessNumber(); ++i) {
                 TextView textProcess = new TextView(this);
+                textProcess.setTextSize(16);
                 layoutProcess.addView(textProcess);
                 for (EntityProcess entityProcess : processList) {
                     if (entityProcess.getStyle().equals(entityStyle.getStyle())
@@ -130,12 +136,14 @@ public class CheckSalaryActivity extends AppCompatActivity {
             circuitSalary += entityCircuit.getNumber() * price;
         }
         TextView textCalSalary = new TextView(this);
+        textCalSalary.setTextSize(16);
         layoutSalary.addView(textCalSalary);
         StringBuilder sb = new StringBuilder();
         sb.append("款式工资： ").append(SomeUtils.priceToShow(styleSalary)).append("\n");
         sb.append("流程工资： ").append(SomeUtils.priceToShow(processSalary)).append("\n");
         textCalSalary.setText(sb);
         TextView textSalary = new TextView(this);
+        textSalary.setTextSize(16);
         layoutSalary.addView(textSalary);
         String realSalary = "实发工资： " + SomeUtils.priceToShow(circuitSalary) + "\n";
         textSalary.setText(realSalary);
