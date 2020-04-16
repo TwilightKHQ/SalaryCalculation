@@ -28,4 +28,8 @@ public class TitleNode extends BaseExpandNode {
     public List<BaseNode> getChildNode() {
         return childNode;
     }
+
+    public int getChildNodeSize() {
+        return childNode.size();
+    }
 }

@@ -1,6 +1,7 @@
 package com.twilightkhq.salarycalculation.InformationList;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
+import com.twilightkhq.salarycalculation.AddInformation.FragmentAddCircuit;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
@@ -24,6 +26,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class FragmentStyle extends Fragment {
+
+    private static boolean DEBUG = true;
+    private static String TAG = "--zzq--" + FragmentStyle.class.getSimpleName();
 
     private static List<TitleNode> nodeList = new ArrayList<>();
     private AdapterStyleNodeTree adapter = new AdapterStyleNodeTree();
@@ -42,19 +47,19 @@ public class FragmentStyle extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_style, container, false);
 
-        initData();
-
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-        adapter.setList(nodeList);
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume: ");
         initData();
+        adapter.setList(nodeList);
         adapter.notifyDataSetChanged();
     }
 

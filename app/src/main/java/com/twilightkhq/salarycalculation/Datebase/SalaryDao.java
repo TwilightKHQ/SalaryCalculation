@@ -66,7 +66,9 @@ public class SalaryDao {
                 null, null, null, "name");
         employeeList.clear();
         while (cursor.moveToNext()) {
-            employeeList.add(new EntityEmployee(cursor.getString(cursor.getColumnIndex("name"))));
+            employeeList.add(new EntityEmployee(
+                    cursor.getString(cursor.getColumnIndex("name"))
+            ));
         }
         cursor.close();
         closeDb(db);
@@ -78,10 +80,12 @@ public class SalaryDao {
                 null, null, null, "style");
         styleList.clear();
         while (cursor.moveToNext()) {
-            styleList.add(new EntityStyle(cursor.getString(cursor.getColumnIndex("style")),
+            styleList.add(new EntityStyle(cursor.getString(
+                    cursor.getColumnIndex("style")),
                     cursor.getInt(cursor.getColumnIndex("process_number")),
                     cursor.getInt(cursor.getColumnIndex("style_price")),
-                    cursor.getInt(cursor.getColumnIndex("number"))));
+                    cursor.getInt(cursor.getColumnIndex("number"))
+            ));
         }
         cursor.close();
         closeDb(db);
@@ -93,10 +97,12 @@ public class SalaryDao {
                 null, null, null, "style,process_id");
         processList.clear();
         while (cursor.moveToNext()) {
-            processList.add(new EntityProcess(cursor.getString(cursor.getColumnIndex("style")),
+            processList.add(new EntityProcess(cursor.getString(
+                    cursor.getColumnIndex("style")),
                     cursor.getInt(cursor.getColumnIndex("process_id")),
                     cursor.getInt(cursor.getColumnIndex("process_price")),
-                    cursor.getInt(cursor.getColumnIndex("number"))));
+                    cursor.getInt(cursor.getColumnIndex("number"))
+            ));
         }
         cursor.close();
         closeDb(db);
@@ -112,15 +118,11 @@ public class SalaryDao {
                     cursor.getString(cursor.getColumnIndex("name")),
                     cursor.getString(cursor.getColumnIndex("style")),
                     cursor.getInt(cursor.getColumnIndex("process_id")),
-                    cursor.getInt(cursor.getColumnIndex("number")),
-                    cursor.getInt(cursor.getColumnIndex("process_price"))
+                    cursor.getInt(cursor.getColumnIndex("number"))
             ));
         }
         cursor.close();
         closeDb(db);
-        for (EntityCircuit circuit : circuitList) {
-            Log.d("zzq", "queryCircuitTable: circuit = " + circuit.toString());
-        }
     }
 
     public void insertEmployee(EntityEmployee entityEmployee) {

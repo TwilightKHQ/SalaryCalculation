@@ -1,5 +1,6 @@
 package com.twilightkhq.salarycalculation.AddInformation;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -36,19 +37,24 @@ import java.util.List;
 public class FragmentAddCircuit extends Fragment implements View.OnClickListener {
 
     private static boolean DEBUG = true;
-    private static String TAG = "--zzq--debug";
+    private static String TAG = "--zzq--" + FragmentAddCircuit.class.getSimpleName();
 
     private SalaryDao salaryDao;
+    private EntityCircuit oldCircuit;
     private boolean numberFlag = false;
+    private SharedPreferences mSharedPreferences;
     private static List<String> names = new ArrayList<>();
     private static List<String> styles = new ArrayList<>();
     private static List<String> processIDs = new ArrayList<>();
     private static List<Integer> processNumbers = new ArrayList<>();
 
+    private Button button;
     private NiceSpinner spinnerEmployee;
     private NiceSpinner spinnerStyle;
     private NiceSpinner spinnerProcessID;
     private EditText editNumber;
+    private TextView tvChooseStyle;
+    private TextView tvChooseProcess;
 
     public FragmentAddCircuit() {
         // Required empty public constructor
@@ -92,52 +98,28 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
 
     private void initView(View view) {
         spinnerEmployee = (NiceSpinner) view.findViewById(R.id.spinner_employee);
-        final TextView tvChooseStyle = (TextView) view.findViewById(R.id.tv_choose_style);
+        tvChooseStyle = (TextView) view.findViewById(R.id.tv_choose_style);
         spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
-        final TextView tvChooseProcessID = (TextView) view.findViewById(R.id.tv_choose_process_id);
+        tvChooseProcess = (TextView) view.findViewById(R.id.tv_choose_process_id);
         spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
         editNumber = (EditText) view.findViewById(R.id.edit_number);
 
-        Button button = (Button) view.findViewById(R.id.bt_change);
+        button = (Button) view.findViewById(R.id.bt_change);
         button.setOnClickListener(this);
-        button.setEnabled(numberFlag);
 
         spinnerEmployee.attachDataSource(names);
         spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
                 if (position == 0) return;
-                if (DEBUG) {
-                    Log.d(TAG, "onItemSelected: selected = " + names.get(position));
-                }
-                spinnerStyle.attachDataSource(styles);
-                if (tvChooseStyle.getVisibility() != View.VISIBLE) {
-                    tvChooseStyle.setVisibility(View.VISIBLE);
-                }
-                if (spinnerStyle.getVisibility() != View.VISIBLE) {
-                    spinnerStyle.setVisibility(View.VISIBLE);
-                }
+                employeeSelected(position);
             }
         });
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
                 if (position == 0) return;
-                if (DEBUG) {
-                    Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
-                }
-                processIDs.clear();
-                for (int i = 1; i <= processNumbers.get(position - 1); i++) {
-                    processIDs.add(i + "");
-                }
-                processIDs.add(0, "请选择工序");
-                spinnerProcessID.attachDataSource(processIDs);
-                if (tvChooseProcessID.getVisibility() != View.VISIBLE) {
-                    tvChooseProcessID.setVisibility(View.VISIBLE);
-                }
-                if (spinnerProcessID.getVisibility() != View.VISIBLE) {
-                    spinnerProcessID.setVisibility(View.VISIBLE);
-                }
+                styleSelected(position);
             }
         });
 
@@ -159,50 +141,148 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
                 button.setEnabled(numberFlag);
             }
         });
+
+        intentAction();
+        button.setEnabled(numberFlag);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.clear();
+        editor.putString("action", "add");
+        editor.apply();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
-            int price =  findProcessPrice(spinnerStyle.getSelectedItem().toString(),
-                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()));
-            if (price == 1000000) {
-                Toast.makeText(getActivity(), "未查到对应工序价格", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (findCircuit(spinnerEmployee.getSelectedItem().toString(),
-                    spinnerStyle.getSelectedItem().toString(),
-                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()))) {
-                Toast.makeText(getActivity(), "重复, 请到信息列表中修改！", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            salaryDao.insertCircuit(new EntityCircuit(
-                    spinnerEmployee.getSelectedItem().toString(),
-                    spinnerStyle.getSelectedItem().toString(),
-                    Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
-                    Integer.parseInt(editNumber.getText().toString()),
-                    price
-            ));
-            editNumber.setText("");
-        }
-    }
-
-    private int findProcessPrice(String style, int processID) {
-        List<EntityProcess> processList = salaryDao.getProcessList();
-        for (EntityProcess entityProcess : processList) {
-            if (entityProcess.getStyle().equals(style) &&entityProcess.getProcessID() == processID) {
-                return entityProcess.getProcessPrice();
+            if (button.getText().equals(getString(R.string.add))) {
+                if (findCircuit(spinnerEmployee.getSelectedItem().toString(),
+                        spinnerStyle.getSelectedItem().toString(),
+                        Integer.parseInt(spinnerProcessID.getSelectedItem().toString()))) {
+                    Toast.makeText(getActivity(), "重复, 请到信息列表中修改！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                salaryDao.insertCircuit(new EntityCircuit(
+                        spinnerEmployee.getSelectedItem().toString(),
+                        spinnerStyle.getSelectedItem().toString(),
+                        Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
+                        Integer.parseInt(editNumber.getText().toString())
+                ));
+                editNumber.setText("");
+            } else if (button.getText().equals(getString(R.string.change))) {
+                salaryDao.updateCircuit(oldCircuit, new EntityCircuit(
+                        spinnerEmployee.getSelectedItem().toString(),
+                        spinnerStyle.getSelectedItem().toString(),
+                        Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
+                        Integer.parseInt(editNumber.getText().toString())
+                ));
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putString("action", "add");
+                editor.apply();
+                getActivity().onBackPressed();
             }
         }
-        return 100000;
     }
 
     private boolean findCircuit(String name, String style, int processID) {
         List<EntityCircuit> circuitList = salaryDao.getCircuitList();
         for (EntityCircuit entityCircuit : circuitList) {
             if (entityCircuit.getName().equals(name) && entityCircuit.getStyle().equals(style)
-            && entityCircuit.getProcessID() == processID) return true;
+                    && entityCircuit.getProcessID() == processID) return true;
         }
         return false;
+    }
+
+    private EntityCircuit findEntityCircuit(String name, String style, int processID) {
+        List<EntityCircuit> circuitList = salaryDao.getCircuitList();
+        for (EntityCircuit entityCircuit : circuitList) {
+            if (entityCircuit.getName().equals(name) && entityCircuit.getStyle().equals(style)
+                    && entityCircuit.getProcessID() == processID) return entityCircuit;
+        }
+        return null;
+    }
+
+    private void intentAction() {
+        mSharedPreferences = getActivity().getSharedPreferences("shared",
+                AddInformationActivity.MODE_PRIVATE);
+        if ("change".equals(mSharedPreferences.getString("action", "add"))
+                && mSharedPreferences.getInt("type", -1) == 3) {
+            button.setText(R.string.change);
+            Log.d(TAG, "intentAction: ");
+            String oldName = mSharedPreferences.getString("oldName", "");
+            String oldStyle = mSharedPreferences.getString("oldStyle", "");
+            String oldProcessID = mSharedPreferences.getString("oldProcessID", "");
+            oldCircuit = findEntityCircuit(oldName, oldStyle, Integer.parseInt(oldProcessID));
+            Log.d(TAG, "intentAction: oldCircuit " + oldCircuit);
+            if (oldCircuit != null) {
+                int namePosition = findNamePosition(names, oldName);
+                Log.d(TAG, "intentAction: names" + names + " oldName " + oldName);
+                Log.d(TAG, "intentAction: namePosition " + namePosition);
+                if (namePosition != -1) {
+                    spinnerEmployee.setSelectedIndex(namePosition);
+                    employeeSelected(namePosition);
+                    int stylePosition = findStylePosition(styles, oldStyle);
+                    Log.d(TAG, "intentAction: stylePosition " + stylePosition);
+                    if (stylePosition != -1) {
+                        spinnerStyle.setSelectedIndex(stylePosition);
+                        styleSelected(stylePosition);
+                        spinnerProcessID.setSelectedIndex(Integer.parseInt(oldProcessID));
+                        editNumber.setText(oldCircuit.getNumber() + "");
+                    }
+                }
+            }
+        }
+    }
+
+    private void employeeSelected(int position) {
+        if (DEBUG) {
+            Log.d(TAG, "onItemSelected: selected = " + names.get(position));
+        }
+        spinnerStyle.attachDataSource(styles);
+        if (tvChooseStyle.getVisibility() != View.VISIBLE) {
+            tvChooseStyle.setVisibility(View.VISIBLE);
+        }
+        if (spinnerStyle.getVisibility() != View.VISIBLE) {
+            spinnerStyle.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void styleSelected(int position) {
+        if (DEBUG) {
+            Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
+        }
+        processIDs.clear();
+        for (int i = 1; i <= processNumbers.get(position - 1); i++) {
+            processIDs.add(i + "");
+        }
+        processIDs.add(0, "请选择工序");
+        spinnerProcessID.attachDataSource(processIDs);
+        if (tvChooseProcess.getVisibility() != View.VISIBLE) {
+            tvChooseProcess.setVisibility(View.VISIBLE);
+        }
+        if (spinnerProcessID.getVisibility() != View.VISIBLE) {
+            spinnerProcessID.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private int findNamePosition(List<String> names, String oldName) {
+        for (int i = 0; i < names.size(); ++i) {
+            if (names.get(i).equals(oldName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findStylePosition(List<String> styles, String style) {
+        for (int i = 0; i < styles.size(); ++i) {
+            if (styles.get(i).equals(style)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

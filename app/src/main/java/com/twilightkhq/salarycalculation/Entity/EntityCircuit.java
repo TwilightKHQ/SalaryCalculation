@@ -8,14 +8,12 @@ public class EntityCircuit {
     private String style;
     private int processID;
     private int number;
-    private int processPrice;
 
-    public EntityCircuit(String name, String style, int processID, int number, int processPrice) {
+    public EntityCircuit(String name, String style, int processID, int number) {
         this.name = name;
         this.style = style;
         this.processID = processID;
         this.number = number;
-        this.processPrice = processPrice;
     }
 
     public String getName() {
@@ -50,22 +48,4 @@ public class EntityCircuit {
         this.number = number;
     }
 
-    public int getProcessPrice() {
-        return processPrice;
-    }
-
-    public void setProcessPrice(int processPrice) {
-        this.processPrice = processPrice;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "EntityCircuit{" +
-                "name='" + name + '\'' +
-                ", style='" + style + '\'' +
-                ", processID=" + processID +
-                ", number=" + number +
-                '}';
-    }
 }

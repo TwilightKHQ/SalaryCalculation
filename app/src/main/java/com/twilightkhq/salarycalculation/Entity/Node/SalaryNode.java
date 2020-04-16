@@ -7,16 +7,22 @@ import com.chad.library.adapter.base.entity.node.BaseNode;
 
 import java.util.List;
 
-public class ProcessNode extends BaseExpandNode {
+public class SalaryNode extends BaseExpandNode {
 
+    private String style;
     private String processID;
     private String number;
     private String price;
 
-    public ProcessNode(String processID, String number, String price) {
+    public SalaryNode(String style, String processID, String number, String price) {
+        this.style = style;
         this.processID = processID;
         this.number = number;
         this.price = price;
+    }
+
+    public String getStyle() {
+        return style;
     }
 
     public String getProcessID() {

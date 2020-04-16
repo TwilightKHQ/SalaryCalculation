@@ -69,7 +69,6 @@ public class AddInformationActivity extends AppCompatActivity {
 
     private void intentAction() {
         Intent intent = getIntent();
-        Log.d(TAG, "intentAction: intent" + intent);
         int type = intent.getIntExtra("type", -1);
         if (type == -1) return;
         viewPager.setCurrentItem(type);

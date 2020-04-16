@@ -11,8 +11,16 @@ public class SomeUtils {
     public static String priceToShow(String price) {
         try {
             Integer.parseInt(price);
-            return price.substring(0, price.length() - 2) + "."
-                    + price.substring(price.length() - 2);
+            String partInteger = null;
+            String partDecimal = null;
+            if (price.length() >= 2) {
+                partInteger = price.substring(0, price.length() - 2);
+                partDecimal = price.substring(price.length() - 2);
+                if (partInteger.length() < 1) partInteger = "0";
+                return partInteger + "." + partDecimal;
+            } else {
+                return "0";
+            }
         } catch (NumberFormatException e) {
             return price;
         }
