@@ -42,6 +42,9 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     private SalaryDao salaryDao;
     private EntityCircuit oldCircuit;
     private boolean numberFlag = false;
+    private boolean employeeFlag = false;
+    private boolean styleFlag = false;
+    private boolean processFlag = false;
     private SharedPreferences mSharedPreferences;
     private static List<String> names = new ArrayList<>();
     private static List<String> styles = new ArrayList<>();
@@ -111,6 +114,8 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                employeeFlag = position != 0;
+                judgeButton();
                 if (position == 0) return;
                 employeeSelected(position);
             }
@@ -118,8 +123,17 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                styleFlag = position != 0;
+                judgeButton();
                 if (position == 0) return;
                 styleSelected(position);
+            }
+        });
+        spinnerProcessID.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+            @Override
+            public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                processFlag = position != 0;
+                judgeButton();
             }
         });
 
@@ -138,12 +152,12 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
             public void afterTextChanged(Editable s) {
                 numberFlag = s.length() >= 1 && !" ".contentEquals(s);
                 Log.d(TAG, "onTextChanged: employeeFlag = " + numberFlag);
-                button.setEnabled(numberFlag);
+                judgeButton();
             }
         });
 
         intentAction();
-        button.setEnabled(numberFlag);
+        judgeButton();
     }
 
     @Override
@@ -284,5 +298,9 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
             }
         }
         return -1;
+    }
+
+    private void judgeButton() {
+        button.setEnabled(employeeFlag && styleFlag && processFlag && numberFlag);
     }
 }

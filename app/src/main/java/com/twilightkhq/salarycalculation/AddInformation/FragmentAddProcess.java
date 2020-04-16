@@ -45,6 +45,9 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     private SalaryDao salaryDao;
     private EntityProcess oldProcess;
     private boolean processPriceFlag = false;
+    private boolean processStyleFlag = false;
+    private boolean processProcessFlag = false;
+    private boolean processNumberFlag = false;
     private SharedPreferences mSharedPreferences;
     private List<String> styles = new ArrayList<>();
     private List<String> numbers = new ArrayList<>();
@@ -115,10 +118,13 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
 
         spinnerStyle.attachDataSource(styles);
         spinnerStyle.setSelectedIndex(0);
+        spinnerStyle.getSelectedIndex();
         Log.d(TAG, "initView: SelectedIndex " + spinnerStyle.getSelectedIndex());
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                processStyleFlag = position != 0;
+                judgeButton();
                 if (position == 0) return;
                 styleSelected(position);
             }
@@ -126,6 +132,8 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         spinnerProcessID.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
+                processProcessFlag = position != 0;
+                judgeButton();
                 editNumber.setText(numbers.get(spinnerStyle.getSelectedIndex() - 1));
             }
         });
@@ -147,9 +155,26 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                 button.setEnabled(processPriceFlag);
             }
         });
+        editNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                processNumberFlag = s.length() >= 1 && !" ".contentEquals(s);
+                judgeButton();
+            }
+        });
 
         intentAction();
-        button.setEnabled(processPriceFlag);
+        judgeButton();
     }
 
     @Override
@@ -249,5 +274,10 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
             }
         }
         return -1;
+    }
+
+    private void judgeButton() {
+        button.setEnabled(processStyleFlag && processProcessFlag &&
+                processPriceFlag && processNumberFlag);
     }
 }
