@@ -12,12 +12,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryNodeTree;
-import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
-import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
-import com.twilightkhq.salarycalculation.Entity.EntityProcess;
-import com.twilightkhq.salarycalculation.Entity.Node.ProcessNode;
+import com.twilightkhq.salarycalculation.Entity.Node.EmployeeNode;
 import com.twilightkhq.salarycalculation.Entity.Node.SalaryNode;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
 import com.twilightkhq.salarycalculation.R;
@@ -57,34 +55,41 @@ public class SalaryProvider extends BaseNodeProvider {
         if (position - adapter.findParentNode(data) <= 1)
             return super.onLongClick(helper, view, data, position);
 
-        TitleNode titleNode = (TitleNode) adapter.getData().get(adapter.findParentNode(data));
-        String name = titleNode.getTitle();
 
-        new XPopup.Builder(getContext())
-                .asBottomList("请选择一项", new String[]{"修改", "删除"},
-                        new OnSelectListener() {
-                            @Override
-                            public void onSelect(int p, String text) {
-                                if (p == 0) {
-                                    Intent intent = new Intent(getContext(), AddInformationActivity.class);
-                                    intent.putExtra("type", 3);
-                                    intent.putExtra("name", name);
-                                    intent.putExtra("style", salaryNode.getStyle());
-                                    intent.putExtra("processID", salaryNode.getProcessID());
-                                    getContext().startActivity(intent);
-                                }
-                                if (p == 1) {
-                                    SalaryDao.getInstance(getContext()).deleteCircuit(new EntityCircuit(
-                                            name, salaryNode.getStyle(),
-                                            Integer.parseInt(salaryNode.getProcessID()),
-                                            0));
-                                    getAdapter().collapseAndChild(position);
-                                    getAdapter().getData().remove(position);
-                                    getAdapter().notifyDataSetChanged();
-                                }
-                            }
-                        })
-                .show();
+        BaseNode baseNode = (BaseNode) adapter.getData().get(adapter.findParentNode(data));
+        if (baseNode instanceof TitleNode) {
+            Log.d(TAG, "onLongClick: TitleNode");
+        } else if (baseNode instanceof EmployeeNode) {
+            Log.d(TAG, "onLongClick: EmployeeNode");
+        }
+//        String name = titleNode.getTitle();
+        Log.d(TAG, "onLongClick: ");
+
+//        new XPopup.Builder(getContext())
+//                .asBottomList("请选择一项", new String[]{"修改", "删除"},
+//                        new OnSelectListener() {
+//                            @Override
+//                            public void onSelect(int p, String text) {
+//                                if (p == 0) {
+//                                    Intent intent = new Intent(getContext(), AddInformationActivity.class);
+//                                    intent.putExtra("type", 3);
+//                                    intent.putExtra("name", name);
+//                                    intent.putExtra("style", salaryNode.getStyle());
+//                                    intent.putExtra("processID", salaryNode.getProcessID());
+//                                    getContext().startActivity(intent);
+//                                }
+//                                if (p == 1) {
+//                                    SalaryDao.getInstance(getContext()).deleteCircuit(new EntityCircuit(
+//                                            name, salaryNode.getStyle(),
+//                                            Integer.parseInt(salaryNode.getProcessID()),
+//                                            0));
+//                                    getAdapter().collapseAndChild(position);
+//                                    getAdapter().getData().remove(position);
+//                                    getAdapter().notifyDataSetChanged();
+//                                }
+//                            }
+//                        })
+//                .show();
         return super.onLongClick(helper, view, data, position);
     }
 }

@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.AddInformation;
+package com.twilightkhq.salarycalculation.Activity.AddInformation;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;

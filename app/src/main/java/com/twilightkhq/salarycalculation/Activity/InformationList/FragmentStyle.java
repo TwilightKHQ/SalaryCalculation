@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.InformationList;
+package com.twilightkhq.salarycalculation.Activity.InformationList;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
-import com.twilightkhq.salarycalculation.AddInformation.FragmentAddCircuit;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
@@ -21,8 +20,6 @@ import com.twilightkhq.salarycalculation.Entity.Node.ProcessNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class FragmentStyle extends Fragment {

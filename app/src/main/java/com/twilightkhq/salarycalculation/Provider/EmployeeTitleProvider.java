@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
+import com.twilightkhq.salarycalculation.Entity.Node.EmployeeNode;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
 import com.twilightkhq.salarycalculation.R;
 
@@ -26,82 +27,33 @@ public class EmployeeTitleProvider extends BaseNodeProvider {
 
     @Override
     public int getItemViewType() {
-        return 1;
+        return 4;
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.item_node_title;
-    }
-
-
-    @Override
-    public void convert(BaseViewHolder baseViewHolder, BaseNode baseNode) {
-        TitleNode entity = (TitleNode) baseNode;
-        baseViewHolder.setText(R.id.title, entity.getTitle());
-        baseViewHolder.setImageResource(R.id.iv, R.mipmap.arrow_r);
-
-        setArrowSpin(baseViewHolder, baseNode, false);
+        return R.layout.item_node_employee;
     }
 
     @Override
-    public void convert(@NonNull BaseViewHolder helper, BaseNode item, List<?> payloads) {
-        for (Object payload : payloads) {
-            if (payload instanceof Integer && (int) payload == AdapterStyleNodeTree.EXPAND_COLLAPSE_PAYLOAD) {
-                // 增量刷新，使用动画变化箭头
-                setArrowSpin(helper, item, true);
-            }
+    public void convert(BaseViewHolder helper, BaseNode data) {
+        EmployeeNode entity = (EmployeeNode) data;
+        helper.setText(R.id.title, entity.getTitle());
+
+        if (entity.isExpanded()) {
+            helper.setImageResource(R.id.iv, R.mipmap.arrow_b);
+        } else {
+            helper.setImageResource(R.id.iv, R.mipmap.arrow_r);
         }
     }
 
     @Override
-    public void onClick(@NonNull BaseViewHolder helper, @NonNull View view,
-                        BaseNode data, int position) {
-
-        // 这里使用payload进行增量刷新（避免整个item刷新导致的闪烁，不自然）
-        getAdapter().expandOrCollapse(position, true, true, AdapterStyleNodeTree.EXPAND_COLLAPSE_PAYLOAD);
-
-        super.onClick(helper, view, data, position);
-    }
-
-    @Override
-    public boolean onLongClick(@NonNull BaseViewHolder helper, @NonNull View view,
-                               BaseNode data, int position) {
-        new XPopup.Builder(getContext())
-                .asBottomList("请选择一项", new String[]{"修改", "删除"},
-                        new OnSelectListener() {
-                            @Override
-                            public void onSelect(int position, String text) {
-                                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                .show();
-        return super.onLongClick(helper, view, data, position);
-    }
-
-    private void setArrowSpin(BaseViewHolder helper, BaseNode data, boolean isAnimate) {
-        TitleNode entity = (TitleNode) data;
-
-        ImageView imageView = helper.getView(R.id.iv);
-
+    public void onClick(@NonNull BaseViewHolder helper, @NonNull View view, BaseNode data, int position) {
+        EmployeeNode entity = (EmployeeNode) data;
         if (entity.isExpanded()) {
-            if (isAnimate) {
-                ViewCompat.animate(imageView).setDuration(200)
-                        .setInterpolator(new DecelerateInterpolator())
-                        .rotation(0f)
-                        .start();
-            } else {
-                imageView.setRotation(0f);
-            }
+            getAdapter().collapse(position);
         } else {
-            if (isAnimate) {
-                ViewCompat.animate(imageView).setDuration(200)
-                        .setInterpolator(new DecelerateInterpolator())
-                        .rotation(90f)
-                        .start();
-            } else {
-                imageView.setRotation(90f);
-            }
+            getAdapter().expandAndCollapseOther(position);
         }
     }
 }

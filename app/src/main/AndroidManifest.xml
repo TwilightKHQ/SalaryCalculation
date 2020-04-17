@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CheckSalaryActivity" />
-        <activity android:name=".SalaryList.SalaryListActivity" />
-        <activity android:name=".AddInformation.AddInformationActivity" />
-        <activity android:name=".InformationList.InformationListActivity" />
+        <activity android:name=".Activity.CheckSalaryActivity" />
+        <activity android:name=".Activity.SalaryList.SalaryListActivity" />
+        <activity android:name=".Activity.AddInformation.AddInformationActivity" />
+        <activity android:name=".Activity.InformationList.InformationListActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

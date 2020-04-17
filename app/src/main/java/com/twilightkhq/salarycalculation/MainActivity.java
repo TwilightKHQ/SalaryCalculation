@@ -4,22 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
-import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
-import com.twilightkhq.salarycalculation.InformationList.InformationListActivity;
-import com.twilightkhq.salarycalculation.SalaryList.SalaryListActivity;
-import com.twilightkhq.salarycalculation.Utils.AppUtil;
-
-import java.util.List;
+import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.Activity.InformationList.InformationListActivity;
+import com.twilightkhq.salarycalculation.Activity.SalaryList.SalaryListActivity;
+import com.twilightkhq.salarycalculation.Activity.CheckSalaryActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static boolean DEBUG = true;
-    private static String TAG = "--zzq--debug";
+    private static String TAG = "--zzq--" + MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,12 +1,9 @@
 package com.twilightkhq.salarycalculation.Provider;
 
 import android.content.Intent;
-import android.service.quicksettings.Tile;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -17,12 +14,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
-import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
-import com.twilightkhq.salarycalculation.AddInformation.FragmentAddProcess;
+import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
-import com.twilightkhq.salarycalculation.Entity.SalaryNode.FirstNode;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.List;

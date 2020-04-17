@@ -1,8 +1,6 @@
-package com.twilightkhq.salarycalculation.InformationList;
+package com.twilightkhq.salarycalculation.Activity.InformationList;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,20 +12,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
-import com.twilightkhq.salarycalculation.AddInformation.AddInformationActivity;
-import com.twilightkhq.salarycalculation.AddInformation.FragmentAddProcess;
-import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
+import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class FragmentEmployee extends Fragment {

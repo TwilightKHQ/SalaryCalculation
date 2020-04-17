@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.SalaryList;
+package com.twilightkhq.salarycalculation.Activity.SalaryList;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryNodeTree;
-import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
 import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.Node.SalaryNode;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
-import com.twilightkhq.salarycalculation.Entity.Node.ProcessNode;
-import com.twilightkhq.salarycalculation.Provider.ProcessProvider;
 import com.twilightkhq.salarycalculation.R;
 import com.twilightkhq.salarycalculation.Utils.SomeUtils;
 
@@ -34,7 +31,6 @@ public class FragmentEmployeeSalary extends Fragment {
     private static String TAG = "--zzq--" + FragmentEmployeeSalary.class.getSimpleName();
 
     private SalaryDao salaryDao;
-    private static int salary;
     private static List<BaseNode> nodeList = new ArrayList<>();
 
     private AdapterSalaryNodeTree adapter = new AdapterSalaryNodeTree();
@@ -75,7 +71,7 @@ public class FragmentEmployeeSalary extends Fragment {
         List<EntityCircuit> circuitList = salaryDao.getCircuitList();
         nodeList.clear();
         for (EntityEmployee entityEmployee : employeeList) {
-            salary = 0;
+            int salary = 0;
             List<BaseNode> secondNodeList = new ArrayList<>();
             secondNodeList.add(new SalaryNode("款式", "工序", "件数", "单价"));
             for (EntityCircuit entityCircuit : circuitList) {

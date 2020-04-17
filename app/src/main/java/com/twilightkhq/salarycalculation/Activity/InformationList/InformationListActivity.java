@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.InformationList;
+package com.twilightkhq.salarycalculation.Activity.InformationList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

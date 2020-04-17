@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation.AddInformation;
+package com.twilightkhq.salarycalculation.Activity.AddInformation;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
-import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
 import com.twilightkhq.salarycalculation.Utils.SomeUtils;

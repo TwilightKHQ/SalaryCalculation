@@ -4,19 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".InformationList.FragmentEmployee">
+    tools:context=".Activity.InformationList.FragmentEmployee">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="新增员工" />
-
-    <EditText
-        android:id="@+id/edit_employee"
-        android:maxLines="1"
-        android:inputType="text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入员工姓名" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -1,6 +1,5 @@
-package com.twilightkhq.salarycalculation.AddInformation;
+package com.twilightkhq.salarycalculation.Activity.AddInformation;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -8,24 +7,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.google.android.material.tabs.TabLayout;
 import com.twilightkhq.salarycalculation.Adapter.AdapterFragment;
-import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
-import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
-import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
-import com.twilightkhq.salarycalculation.Entity.EntityProcess;
-import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
-
-import org.angmarch.views.NiceSpinner;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.twilightkhq.salarycalculation;
+package com.twilightkhq.salarycalculation.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,7 @@ import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
-import com.twilightkhq.salarycalculation.SalaryList.FragmentEmployeeSalary;
+import com.twilightkhq.salarycalculation.R;
 import com.twilightkhq.salarycalculation.Utils.SomeUtils;
 
 import java.util.List;
