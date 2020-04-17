@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingRight="16dp">
+    android:paddingEnzd="16dp">
 
     <ImageView
         android:id="@+id/iv_head"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@android:color/black"
