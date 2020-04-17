@@ -2,65 +2,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:orientation="vertical"
-    tools:context=".InformationList.FragmentEmployee">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="选择款式" />
+            android:layout_marginHorizontal="@dimen/dp_10"
+            android:orientation="vertical">
 
-        <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/new_process"
+                android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/text_choose_process"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="选择工序"
-            android:visibility="gone" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/blue" />
 
-        <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner_process_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="单价" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="款式："
+                    android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edit_process_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入该工序的单价"
-            android:inputType="numberDecimal" />
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/spinner_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="件数" />
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/edit_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入该工序件数"
-            android:inputType="number" />
+            <LinearLayout
+                android:id="@+id/layout_choose_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="工序："
+                    android:textSize="18sp" />
+
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/spinner_process_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="工序单价："
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_process_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_process_price"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginVertical="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:text="件数："
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_process_number"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/bt_change"
@@ -73,3 +140,4 @@
         android:text="@string/add" />
 
 </LinearLayout>
+

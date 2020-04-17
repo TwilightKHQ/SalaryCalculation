@@ -21,4 +21,14 @@
     <string name="change">修改</string>
     <string name="delete">删除</string>
 
+    <string name="new_employee">添加员工</string>
+    <string name="hint_employee">请输入员工姓名</string>
+    <string name="new_style">添加款式</string>
+    <string name="hint_process_number">请输入款式工序数量</string>
+    <string name="hint_number">请输入件数</string>
+    <string name="hint_style">请输入款式名称</string>
+    <string name="new_process">添加工序</string>
+    <string name="hint_process_price">请输入该工序的单价</string>
+    <string name="new_circuit">添加流程</string>
+
 </resources>

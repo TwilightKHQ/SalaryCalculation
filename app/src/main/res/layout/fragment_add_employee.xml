@@ -2,28 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".InformationList.FragmentEmployee">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/dp_10"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="新增员工" />
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/new_employee"
+            android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/edit_employee"
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="15dp"
+            android:background="@color/blue" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入员工姓名"
-            android:inputType="text"
-            android:maxLines="1" />
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="员工："
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edit_employee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_employee"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -38,3 +63,4 @@
         android:text="@string/add" />
 
 </LinearLayout>
+

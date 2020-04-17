@@ -1,8 +1,6 @@
 package com.twilightkhq.salarycalculation.AddInformation;
 
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,21 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.twilightkhq.salarycalculation.Adapter.AdapterArray;
-import com.twilightkhq.salarycalculation.Datebase.SalaryDBHelper;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
-import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
@@ -34,7 +27,6 @@ import org.angmarch.views.NiceSpinner;
 import org.angmarch.views.OnSpinnerItemSelectedListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FragmentAddProcess extends Fragment implements View.OnClickListener {
@@ -59,7 +51,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     private NiceSpinner spinnerProcessID;
     private EditText editNumber;
     private EditText editProcessPrice;
-    private TextView tvChooseProcess;
+    private LinearLayout layoutChooseProcess;
 
     public FragmentAddProcess() {
         // Required empty public constructor
@@ -109,7 +101,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         Log.d(TAG, "initView: ");
         spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
         spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
-        tvChooseProcess = (TextView) view.findViewById(R.id.text_choose_process);
+        layoutChooseProcess = (LinearLayout) view.findViewById(R.id.layout_choose_process);
         editNumber = (EditText) view.findViewById(R.id.edit_number);
         editProcessPrice = (EditText) view.findViewById(R.id.edit_process_price);
 
@@ -135,6 +127,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                 processProcessFlag = position != 0;
                 judgeButton();
                 editNumber.setText(numbers.get(spinnerStyle.getSelectedIndex() - 1));
+                editNumber.setSelection(editNumber.getText().length());
             }
         });
         editProcessPrice.addTextChangedListener(new TextWatcher() {
@@ -237,11 +230,8 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         }
         processIDs.add(0, "请选择工序");
         spinnerProcessID.attachDataSource(processIDs);
-        if (tvChooseProcess.getVisibility() != View.VISIBLE) {
-            tvChooseProcess.setVisibility(View.VISIBLE);
-        }
-        if (spinnerProcessID.getVisibility() != View.VISIBLE) {
-            spinnerProcessID.setVisibility(View.VISIBLE);
+        if (layoutChooseProcess.getVisibility() != View.VISIBLE) {
+            layoutChooseProcess.setVisibility(View.VISIBLE);
         }
     }
 
