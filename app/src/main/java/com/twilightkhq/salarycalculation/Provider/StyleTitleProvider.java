@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
+import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryNodeTree;
 import com.twilightkhq.salarycalculation.Adapter.AdapterStyleNodeTree;
 import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
@@ -71,27 +72,30 @@ public class StyleTitleProvider extends BaseNodeProvider {
     public boolean onLongClick(@NonNull BaseViewHolder helper, @NonNull View view,
                                BaseNode data, int position) {
         TitleNode titleNode = (TitleNode) data;
-        new XPopup.Builder(getContext())
-                .asBottomList("请选择一项", new String[]{"修改", "删除"},
-                        new OnSelectListener() {
-                            @Override
-                            public void onSelect(int p, String text) {
-                                if (p == 0) {
-                                    Intent intent = new Intent(getContext(), AddInformationActivity.class);
-                                    intent.putExtra("type", 1);
-                                    intent.putExtra("style", titleNode.getTitle());
-                                    getContext().startActivity(intent);
+        AdapterStyleNodeTree adapter = (AdapterStyleNodeTree) getAdapter();
+        if (adapter != null) {
+            new XPopup.Builder(getContext())
+                    .asBottomList("请选择一项", new String[]{"修改", "删除"},
+                            new OnSelectListener() {
+                                @Override
+                                public void onSelect(int p, String text) {
+                                    if (p == 0) {
+                                        Intent intent = new Intent(getContext(), AddInformationActivity.class);
+                                        intent.putExtra("type", 1);
+                                        intent.putExtra("style", titleNode.getTitle());
+                                        getContext().startActivity(intent);
+                                    }
+                                    if (p == 1) {
+                                        SalaryDao.getInstance(getContext()).deleteStyle(new EntityStyle(
+                                                titleNode.getTitle(), 0, 0, 0));
+                                        adapter.collapseAndChild(position);
+                                        adapter.getData().remove(position);
+                                        adapter.notifyDataSetChanged();
+                                    }
                                 }
-                                if (p == 1) {
-                                    SalaryDao.getInstance(getContext()).deleteStyle(new EntityStyle(
-                                            titleNode.getTitle(), 0, 0, 0));
-                                    getAdapter().collapseAndChild(position);
-                                    getAdapter().getData().remove(position);
-                                    getAdapter().notifyDataSetChanged();
-                                }
-                            }
-                        })
-                .show();
+                            })
+                    .show();
+        }
         return super.onLongClick(helper, view, data, position);
     }
 

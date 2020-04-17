@@ -2,9 +2,11 @@ package com.twilightkhq.salarycalculation.Adapter;
 
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
+import com.twilightkhq.salarycalculation.Entity.Node.EmployeeNode;
 import com.twilightkhq.salarycalculation.Entity.Node.ProcessNode;
 import com.twilightkhq.salarycalculation.Entity.Node.SalaryNode;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
+import com.twilightkhq.salarycalculation.Provider.EmployeeTitleProvider;
 import com.twilightkhq.salarycalculation.Provider.ProcessProvider;
 import com.twilightkhq.salarycalculation.Provider.SalaryProvider;
 import com.twilightkhq.salarycalculation.Provider.StyleTitleProvider;
@@ -18,6 +20,7 @@ public class AdapterSalaryNodeTree extends BaseNodeAdapter {
     public AdapterSalaryNodeTree() {
         super();
         addNodeProvider(new StyleTitleProvider());
+        addNodeProvider(new EmployeeTitleProvider());
         addNodeProvider(new SalaryProvider());
     }
 
@@ -28,6 +31,8 @@ public class AdapterSalaryNodeTree extends BaseNodeAdapter {
             return 1;
         } else if (node instanceof SalaryNode) {
             return 3;
+        } else if (node instanceof EmployeeNode) {
+            return 4;
         }
         return -1;
     }

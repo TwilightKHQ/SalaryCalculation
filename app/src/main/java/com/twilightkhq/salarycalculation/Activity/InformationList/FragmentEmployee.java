@@ -65,12 +65,12 @@ public class FragmentEmployee extends Fragment {
                                             startActivityForResult(intent, 10);
                                         }
                                         if (position == 1) {
-                                            salaryDao.deleteEmployee(
-                                                    new EntityEmployee(names.get(i))
-                                            );
+                                            salaryDao.deleteEmployee(new EntityEmployee(
+                                                    names.get(i)
+                                            ));
                                             names.remove(names.get(i));
                                             adapter.notifyDataSetChanged();
-                                            initData();
+//                                            initData();
                                         }
                                     }
                                 })

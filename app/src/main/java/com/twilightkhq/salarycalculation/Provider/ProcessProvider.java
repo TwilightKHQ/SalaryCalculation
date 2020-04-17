@@ -47,35 +47,38 @@ public class ProcessProvider extends BaseNodeProvider {
                                BaseNode data, int position) {
         ProcessNode processNode = (ProcessNode) data;
         AdapterStyleNodeTree adapter = (AdapterStyleNodeTree) getAdapter();
-        if (position - adapter.findParentNode(data) <= 3)
-            return super.onLongClick(helper, view, data, position);
+        if (adapter != null) {
+            int parentPosition = adapter.findParentNode(data);
+            if (position - parentPosition <= 3)
+                return super.onLongClick(helper, view, data, position);
 
-        TitleNode titleNode = (TitleNode) adapter.getData().get(adapter.findParentNode(data));
-        String style = titleNode.getTitle();
+            TitleNode parentNode = (TitleNode) adapter.getData().get(parentPosition);
+            String style = parentNode.getTitle();
 
-        new XPopup.Builder(getContext())
-                .asBottomList("请选择一项", new String[]{"修改", "删除"},
-                        new OnSelectListener() {
-                            @Override
-                            public void onSelect(int p, String text) {
-                                if (p == 0) {
-                                    Intent intent = new Intent(getContext(), AddInformationActivity.class);
-                                    intent.putExtra("type", 2);
-                                    intent.putExtra("style", style);
-                                    intent.putExtra("processID", processNode.getProcessID());
-                                    getContext().startActivity(intent);
+            new XPopup.Builder(getContext())
+                    .asBottomList("请选择一项", new String[]{"修改", "删除"},
+                            new OnSelectListener() {
+                                @Override
+                                public void onSelect(int p, String text) {
+                                    if (p == 0) {
+                                        Intent intent = new Intent(getContext(), AddInformationActivity.class);
+                                        intent.putExtra("type", 2);
+                                        intent.putExtra("style", style);
+                                        intent.putExtra("processID", processNode.getProcessID());
+                                        getContext().startActivity(intent);
+                                    }
+                                    if (p == 1) {
+                                        adapter.nodeRemoveData(parentNode, position - parentPosition - 1);
+                                        adapter.notifyDataSetChanged();
+                                        SalaryDao.getInstance(getContext()).deleteProcess(new EntityProcess(
+                                                style, Integer.parseInt(processNode.getProcessID()),
+                                                0, 0));
+                                    }
                                 }
-                                if (p == 1) {
-                                    SalaryDao.getInstance(getContext()).deleteProcess(new EntityProcess(
-                                            style, Integer.parseInt(processNode.getProcessID()),
-                                            0, 0));
-                                    getAdapter().collapseAndChild(position);
-                                    getAdapter().getData().remove(position);
-                                    getAdapter().notifyDataSetChanged();
-                                }
-                            }
-                        })
-                .show();
+                            })
+                    .show();
+        }
+
         return super.onLongClick(helper, view, data, position);
     }
 }

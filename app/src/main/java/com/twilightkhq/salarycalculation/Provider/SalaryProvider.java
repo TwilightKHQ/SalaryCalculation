@@ -3,6 +3,7 @@ package com.twilightkhq.salarycalculation.Provider;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -48,48 +49,56 @@ public class SalaryProvider extends BaseNodeProvider {
     @Override
     public boolean onLongClick(@NonNull BaseViewHolder helper, @NonNull View view,
                                BaseNode data, int position) {
-        Log.d(TAG, "onLongClick: data " + getAdapter().getData().get(getAdapter().findParentNode(data)));
-        Log.d(TAG, "onLongClick: position " + getAdapter().findParentNode(data));
+        String name = "";
+        int nodeSize = 0;
+
         SalaryNode salaryNode = (SalaryNode) data;
         AdapterSalaryNodeTree adapter = (AdapterSalaryNodeTree) getAdapter();
-        if (position - adapter.findParentNode(data) <= 1)
-            return super.onLongClick(helper, view, data, position);
+        if (adapter != null) {
+            int parentPosition = adapter.findParentNode(data);
+            BaseNode parentNode = (BaseNode) adapter.getData().get(parentPosition);
+            if (parentNode instanceof TitleNode) {
+                Log.d(TAG, "onLongClick: TitleNode");
+                TitleNode titleNode = (TitleNode) parentNode;
+                name = titleNode.getTitle();
+                nodeSize = titleNode.getChildNodeSize();
+            } else if (parentNode instanceof EmployeeNode) {
+                Log.d(TAG, "onLongClick: EmployeeNode");
+                EmployeeNode employeeNode = (EmployeeNode) parentNode;
+                name = employeeNode.getTitle();
+                nodeSize = employeeNode.getChildNodeSize();
+            }
+            if (position - parentPosition <= 1
+                    || position - parentPosition == nodeSize)
+                return super.onLongClick(helper, view, data, position);
 
+            String finalName = name;
+            new XPopup.Builder(getContext())
+                    .asBottomList("请选择一项", new String[]{"修改", "删除"},
+                            new OnSelectListener() {
+                                @Override
+                                public void onSelect(int p, String text) {
+                                    if (p == 0) {
+                                        Intent intent = new Intent(getContext(), AddInformationActivity.class);
+                                        intent.putExtra("type", 3);
+                                        intent.putExtra("name", finalName);
+                                        intent.putExtra("style", salaryNode.getStyle());
+                                        intent.putExtra("processID", salaryNode.getProcessID());
+                                        getContext().startActivity(intent);
+                                    }
+                                    if (p == 1) {
+                                        adapter.nodeRemoveData(parentNode, position - parentPosition - 1);
+                                        adapter.notifyDataSetChanged();
+                                        SalaryDao.getInstance(getContext()).deleteCircuit(new EntityCircuit(
+                                                finalName, salaryNode.getStyle(),
+                                                Integer.parseInt(salaryNode.getProcessID()),
+                                                0));
+                                    }
+                                }
+                            })
+                    .show();
+        } else Log.d(TAG, "onLongClick: adapter is Null!");
 
-        BaseNode baseNode = (BaseNode) adapter.getData().get(adapter.findParentNode(data));
-        if (baseNode instanceof TitleNode) {
-            Log.d(TAG, "onLongClick: TitleNode");
-        } else if (baseNode instanceof EmployeeNode) {
-            Log.d(TAG, "onLongClick: EmployeeNode");
-        }
-//        String name = titleNode.getTitle();
-        Log.d(TAG, "onLongClick: ");
-
-//        new XPopup.Builder(getContext())
-//                .asBottomList("请选择一项", new String[]{"修改", "删除"},
-//                        new OnSelectListener() {
-//                            @Override
-//                            public void onSelect(int p, String text) {
-//                                if (p == 0) {
-//                                    Intent intent = new Intent(getContext(), AddInformationActivity.class);
-//                                    intent.putExtra("type", 3);
-//                                    intent.putExtra("name", name);
-//                                    intent.putExtra("style", salaryNode.getStyle());
-//                                    intent.putExtra("processID", salaryNode.getProcessID());
-//                                    getContext().startActivity(intent);
-//                                }
-//                                if (p == 1) {
-//                                    SalaryDao.getInstance(getContext()).deleteCircuit(new EntityCircuit(
-//                                            name, salaryNode.getStyle(),
-//                                            Integer.parseInt(salaryNode.getProcessID()),
-//                                            0));
-//                                    getAdapter().collapseAndChild(position);
-//                                    getAdapter().getData().remove(position);
-//                                    getAdapter().notifyDataSetChanged();
-//                                }
-//                            }
-//                        })
-//                .show();
         return super.onLongClick(helper, view, data, position);
     }
 }

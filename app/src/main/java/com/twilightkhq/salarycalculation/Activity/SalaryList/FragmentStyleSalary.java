@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryNodeTree;
-import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryStyleNodeTree;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
 import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
@@ -36,7 +35,7 @@ public class FragmentStyleSalary extends Fragment {
     private SalaryDao salaryDao;
     private static List<BaseNode> nodeList = new ArrayList<>();
 
-    private AdapterSalaryStyleNodeTree adapter = new AdapterSalaryStyleNodeTree();
+    private AdapterSalaryNodeTree adapter = new AdapterSalaryNodeTree();
 
     public FragmentStyleSalary() {
         // Required empty public constructor
