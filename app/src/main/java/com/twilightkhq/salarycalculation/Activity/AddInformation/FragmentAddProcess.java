@@ -35,10 +35,6 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
 
     private SalaryDao salaryDao;
     private EntityProcess oldProcess;
-    private boolean processPriceFlag = false;
-    private boolean processStyleFlag = false;
-    private boolean processProcessFlag = false;
-    private boolean processNumberFlag = false;
     private SharedPreferences mSharedPreferences;
     private List<String> styles = new ArrayList<>();
     private List<String> numbers = new ArrayList<>();
@@ -97,7 +93,6 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     }
 
     private void initView(View view) {
-        Log.d(TAG, "initView: ");
         spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
         spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
         layoutChooseProcess = (LinearLayout) view.findViewById(R.id.layout_choose_process);
@@ -114,16 +109,13 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                processStyleFlag = position != 0;
                 judgeButton();
-                if (position == 0) return;
                 styleSelected(position);
             }
         });
         spinnerProcessID.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                processProcessFlag = position != 0;
                 judgeButton();
                 editNumber.setText(numbers.get(spinnerStyle.getSelectedIndex() - 1));
                 editNumber.setSelection(editNumber.getText().length());
@@ -142,9 +134,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
 
             @Override
             public void afterTextChanged(Editable s) {
-                processPriceFlag = s.length() >= 1 && !" ".contentEquals(s);
-                Log.d(TAG, "onTextChanged: employeeFlag = " + processPriceFlag);
-                button.setEnabled(processPriceFlag);
+                judgeButton();
             }
         });
         editNumber.addTextChangedListener(new TextWatcher() {
@@ -160,7 +150,6 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
 
             @Override
             public void afterTextChanged(Editable s) {
-                processNumberFlag = s.length() >= 1 && !" ".contentEquals(s);
                 judgeButton();
             }
         });
@@ -184,6 +173,8 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                         SomeUtils.handlePrice(editProcessPrice.getText().toString()),
                         Integer.parseInt(editNumber.getText().toString())
                 ));
+                editNumber.setText("");
+                editProcessPrice.setText("");
             } else if (button.getText().equals(getString(R.string.change))) {
                 salaryDao.updateProcess(oldProcess, new EntityProcess(
                         spinnerStyle.getSelectedItem().toString(),
@@ -191,13 +182,8 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                         SomeUtils.handlePrice(editProcessPrice.getText().toString()),
                         Integer.parseInt(editNumber.getText().toString())
                 ));
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("action", "add");
-                editor.apply();
                 getActivity().onBackPressed();
             }
-            editNumber.setText("");
-            editProcessPrice.setText("");
         }
     }
 
@@ -223,6 +209,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         if (DEBUG) {
             Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
         }
+        if (position == 0) return;
         processIDs.clear();
         for (int i = 1; i <= processNumbers.get(position - 1); i++) {
             processIDs.add(i + "");
@@ -250,7 +237,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                     styleSelected(position);
                     spinnerProcessID.setSelectedIndex(Integer.parseInt(oldProcessID));
                     editNumber.setText(oldProcess.getNumber() + "");
-                    editProcessPrice.setText(SomeUtils.priceToShow(oldProcess.getProcessPrice() + ""));
+                    editProcessPrice.setText(SomeUtils.priceToShow(oldProcess.getProcessPrice()));
                 }
             }
         }
@@ -266,6 +253,10 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     }
 
     private void judgeButton() {
+        boolean processStyleFlag = spinnerStyle.getSelectedIndex() != 0;
+        boolean processProcessFlag = spinnerProcessID.getSelectedIndex() != 0;
+        boolean processPriceFlag = editProcessPrice.getText().length() >= 1;
+        boolean processNumberFlag = editNumber.getText().length() >= 1;
         button.setEnabled(processStyleFlag && processProcessFlag &&
                 processPriceFlag && processNumberFlag);
     }

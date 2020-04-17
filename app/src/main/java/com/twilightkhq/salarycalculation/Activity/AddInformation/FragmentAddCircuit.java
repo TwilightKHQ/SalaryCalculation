@@ -35,10 +35,6 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
 
     private SalaryDao salaryDao;
     private EntityCircuit oldCircuit;
-    private boolean numberFlag = false;
-    private boolean employeeFlag = false;
-    private boolean styleFlag = false;
-    private boolean processFlag = false;
     private SharedPreferences mSharedPreferences;
     private static List<String> names = new ArrayList<>();
     private static List<String> styles = new ArrayList<>();
@@ -46,10 +42,10 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     private static List<Integer> processNumbers = new ArrayList<>();
 
     private Button button;
+    private EditText editNumber;
     private NiceSpinner spinnerEmployee;
     private NiceSpinner spinnerStyle;
     private NiceSpinner spinnerProcessID;
-    private EditText editNumber;
     private LinearLayout layoutChooseStyle;
     private LinearLayout layoutChooseProcess;
 
@@ -90,7 +86,6 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
             processNumbers.add(entityStyle.getProcessNumber());
         }
         styles.add(0, "请选择款式");
-        Log.d(TAG, "initData: ");
     }
 
     private void initView(View view) {
@@ -108,29 +103,23 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                employeeFlag = position != 0;
                 judgeButton();
-                if (position == 0) return;
                 employeeSelected(position);
             }
         });
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                styleFlag = position != 0;
                 judgeButton();
-                if (position == 0) return;
                 styleSelected(position);
             }
         });
         spinnerProcessID.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                processFlag = position != 0;
                 judgeButton();
             }
         });
-
         editNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -144,8 +133,6 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
 
             @Override
             public void afterTextChanged(Editable s) {
-                numberFlag = s.length() >= 1 && !" ".contentEquals(s);
-                Log.d(TAG, "onTextChanged: employeeFlag = " + numberFlag);
                 judgeButton();
             }
         });
@@ -167,10 +154,10 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
             if (button.getText().equals(getString(R.string.add))) {
-                if (findCircuit(spinnerEmployee.getSelectedItem().toString(),
+                if (findEntityCircuit(spinnerEmployee.getSelectedItem().toString(),
                         spinnerStyle.getSelectedItem().toString(),
-                        Integer.parseInt(spinnerProcessID.getSelectedItem().toString()))) {
-                    Toast.makeText(getActivity(), "重复, 请到信息列表中修改！", Toast.LENGTH_SHORT).show();
+                        Integer.parseInt(spinnerProcessID.getSelectedItem().toString())) != null) {
+                    Toast.makeText(getActivity(), "流程重复", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 salaryDao.insertCircuit(new EntityCircuit(
@@ -187,21 +174,9 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
                         Integer.parseInt(spinnerProcessID.getSelectedItem().toString()),
                         Integer.parseInt(editNumber.getText().toString())
                 ));
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("action", "add");
-                editor.apply();
                 getActivity().onBackPressed();
             }
         }
-    }
-
-    private boolean findCircuit(String name, String style, int processID) {
-        List<EntityCircuit> circuitList = salaryDao.getCircuitList();
-        for (EntityCircuit entityCircuit : circuitList) {
-            if (entityCircuit.getName().equals(name) && entityCircuit.getStyle().equals(style)
-                    && entityCircuit.getProcessID() == processID) return true;
-        }
-        return false;
     }
 
     private EntityCircuit findEntityCircuit(String name, String style, int processID) {
@@ -219,21 +194,16 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         if ("change".equals(mSharedPreferences.getString("action", "add"))
                 && mSharedPreferences.getInt("type", -1) == 3) {
             button.setText(R.string.change);
-            Log.d(TAG, "intentAction: ");
             String oldName = mSharedPreferences.getString("oldName", "");
             String oldStyle = mSharedPreferences.getString("oldStyle", "");
             String oldProcessID = mSharedPreferences.getString("oldProcessID", "");
             oldCircuit = findEntityCircuit(oldName, oldStyle, Integer.parseInt(oldProcessID));
-            Log.d(TAG, "intentAction: oldCircuit " + oldCircuit);
             if (oldCircuit != null) {
                 int namePosition = findNamePosition(names, oldName);
-                Log.d(TAG, "intentAction: names" + names + " oldName " + oldName);
-                Log.d(TAG, "intentAction: namePosition " + namePosition);
                 if (namePosition != -1) {
                     spinnerEmployee.setSelectedIndex(namePosition);
                     employeeSelected(namePosition);
                     int stylePosition = findStylePosition(styles, oldStyle);
-                    Log.d(TAG, "intentAction: stylePosition " + stylePosition);
                     if (stylePosition != -1) {
                         spinnerStyle.setSelectedIndex(stylePosition);
                         styleSelected(stylePosition);
@@ -249,6 +219,7 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         if (DEBUG) {
             Log.d(TAG, "onItemSelected: selected = " + names.get(position));
         }
+        if (position == 0) return;
         spinnerStyle.attachDataSource(styles);
         if (layoutChooseStyle.getVisibility() != View.VISIBLE) {
             layoutChooseStyle.setVisibility(View.VISIBLE);
@@ -259,6 +230,7 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         if (DEBUG) {
             Log.d(TAG, "onItemSelected: selected = " + styles.get(position));
         }
+        if (position == 0) return;
         processIDs.clear();
         for (int i = 1; i <= processNumbers.get(position - 1); i++) {
             processIDs.add(i + "");
@@ -288,7 +260,12 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         return -1;
     }
 
+    // 判断按钮是否能按下
     private void judgeButton() {
+        boolean employeeFlag = spinnerEmployee.getSelectedIndex() != 0;
+        boolean styleFlag = spinnerStyle.getSelectedIndex() != 0;
+        boolean processFlag = spinnerProcessID.getSelectedIndex() != 0;
+        boolean numberFlag = editNumber.getText().length() >= 1;
         button.setEnabled(employeeFlag && styleFlag && processFlag && numberFlag);
     }
 }

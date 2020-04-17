@@ -115,9 +115,6 @@ public class FragmentAddEmployee extends Fragment implements View.OnClickListene
                 SalaryDao.getInstance(getActivity()).updateEmployee(oldEmployee, new EntityEmployee(
                         editEmployee.getText().toString()
                 ));
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("action", "add");
-                editor.apply();
                 getActivity().onBackPressed();
             }
         }

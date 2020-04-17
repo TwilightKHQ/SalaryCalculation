@@ -194,6 +194,8 @@ public class SalaryDao {
         SQLiteDatabase db = getWritableDb(dbName);
         db.delete("process", "style=? and process_id=?",
                 new String[]{entityProcess.getStyle(), entityProcess.getProcessID() + ""});
+        db.delete("circuit", "style=? and process_id=?",
+                new String[]{entityProcess.getStyle(), entityProcess.getProcessID() + ""});
         closeDb(db);
         queryProcessTable();
     }

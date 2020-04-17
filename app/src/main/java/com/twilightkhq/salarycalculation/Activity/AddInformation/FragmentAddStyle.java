@@ -27,10 +27,6 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
     private static boolean DEBUG = true;
     private static String TAG = "--zzq--" + FragmentAddStyle.class.getSimpleName();
 
-    private boolean styleFlag = false;
-    private boolean numberFlag = false;
-    private boolean processNumberFlag = false;
-    private boolean processPriceFlag = false;
     private SalaryDao salaryDao;
     private EntityStyle oldStyle;
     private SharedPreferences mSharedPreferences;
@@ -96,9 +92,7 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                styleFlag = s.length() >= 1 && !" ".contentEquals(s);
-                Log.d(TAG, "onTextChanged: employeeFlag = " + styleFlag);
-                button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
+                judgeButton();
             }
         });
         editNumber.addTextChangedListener(new TextWatcher() {
@@ -114,9 +108,7 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                numberFlag = s.length() >= 1;
-                Log.d(TAG, "onTextChanged: employeeFlag = " + numberFlag);
-                button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
+                judgeButton();
             }
         });
         editStylePrice.addTextChangedListener(new TextWatcher() {
@@ -132,9 +124,7 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                processNumberFlag = s.length() >= 1;
-                Log.d(TAG, "onTextChanged: employeeFlag = " + processNumberFlag);
-                button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
+                judgeButton();
             }
         });
         editProcessNumber.addTextChangedListener(new TextWatcher() {
@@ -150,21 +140,19 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                processPriceFlag = s.length() >= 1;
-                Log.d(TAG, "onTextChanged: employeeFlag = " + processPriceFlag);
-                button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
+                judgeButton();
             }
         });
 
         intentAction();
-        button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
+        judgeButton();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bt_change) {
             if (button.getText().equals(getString(R.string.add))) {
-                if (findStyle(editStyle.getText().toString())) {
+                if (findEntityStyle(editStyle.getText().toString()) != null) {
                     Toast.makeText(getActivity(), "款式重名", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -174,6 +162,10 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
                         SomeUtils.handlePrice(editStylePrice.getText().toString()),
                         Integer.parseInt(editNumber.getText().toString())
                 ));
+                editStyle.setText("");
+                editNumber.setText("");
+                editStylePrice.setText("");
+                editProcessNumber.setText("");
             } else if (button.getText().equals(getString(R.string.change))) {
                 salaryDao.updateStyle(oldStyle, new EntityStyle(
                         editStyle.getText().toString(),
@@ -181,15 +173,8 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
                         SomeUtils.handlePrice(editStylePrice.getText().toString()),
                         Integer.parseInt(editNumber.getText().toString())
                 ));
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putString("action", "add");
-                editor.apply();
                 getActivity().onBackPressed();
             }
-            editStyle.setText("");
-            editNumber.setText("");
-            editStylePrice.setText("");
-            editProcessNumber.setText("");
         }
     }
 
@@ -223,5 +208,13 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
                 editStylePrice.setText(SomeUtils.priceToShow(oldStyle.getStylePrice() + ""));
             }
         }
+    }
+
+    private void judgeButton() {
+        boolean styleFlag = editStyle.getText().length() >= 1 && !" ".contentEquals(editStyle.getText());
+        boolean numberFlag = editNumber.getText().length() >= 1;
+        boolean processNumberFlag = editNumber.getText().length() >= 1;
+        boolean processPriceFlag = editNumber.getText().length() >= 1;
+        button.setEnabled(styleFlag && numberFlag && processNumberFlag && processPriceFlag);
     }
 }
