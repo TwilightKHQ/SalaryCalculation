@@ -168,10 +168,10 @@ public class CheckSalaryActivity extends AppCompatActivity {
                 layoutSalary.addView(textStyleNumber);
                 StringBuilder sbStyleNumber = new StringBuilder();
                 if (processCount == entityStyle.getNumber()) {
-                    sbStyleNumber.append(" 完成件数与款式件数 相等 .\n");
+                    sbStyleNumber.append("完成件数与款式件数 相等 .\n");
                     textStyleNumber.setText(sbStyleNumber);
                 } else {
-                    sbStyleNumber.append(" 完成件数与款式件数 不等 .\n").append("款式件数 = ")
+                    sbStyleNumber.append("完成件数与款式件数 不等 .\n").append("款式件数 = ")
                             .append(entityStyle.getNumber()).append("\t 完成件数 = ")
                             .append(processCount).append("\n");
                     textStyleNumber.setText(sbStyleNumber);
