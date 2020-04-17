@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
+import com.twilightkhq.salarycalculation.Entity.EntityEmployee;
 import com.twilightkhq.salarycalculation.Entity.EntityProcess;
 import com.twilightkhq.salarycalculation.Entity.EntityStyle;
 import com.twilightkhq.salarycalculation.R;
@@ -71,12 +72,12 @@ public class CheckSalaryActivity extends AppCompatActivity {
             StringBuilder sb = new StringBuilder();
 
             if (stylePrice == entityStyle.getStylePrice()) {
-                sb.append(entityStyle.getStyle()).append(" 款: ").append("单价 无误 .");
+                sb.append(entityStyle.getStyle()).append(" 款: ").append("单价 无误 .").append("\n");
                 textStylePrice.setText(sb);
             } else {
                 sb.append(entityStyle.getStyle()).append(" 款: ").append("单价 有误 .\n");
                 sb.append("款式单价为 ").append(SomeUtils.priceToShow(entityStyle.getStylePrice()))
-                        .append(" 工序单价和为 ").append(SomeUtils.priceToShow(stylePrice));
+                        .append(" 工序单价和为 ").append(SomeUtils.priceToShow(stylePrice)).append("\n");
                 textStylePrice.setText(sb);
                 textStylePrice.setTextColor(getResources().getColor(R.color.red, null));
             }
@@ -101,17 +102,17 @@ public class CheckSalaryActivity extends AppCompatActivity {
                         StringBuilder sb = new StringBuilder();
                         sb.append("工序 ").append(i).append(" 已录入. ");
                         if (entityProcess.getNumber() == entityStyle.getNumber()) {
-                            sb.append("工序件数与款式件数 相等 .");
+                            sb.append("工序件数与款式件数 相等 .\n");
                             textProcess.setText(sb);
                         } else {
-                            sb.append("工序件数与款式件数 不等 .");
+                            sb.append("工序件数与款式件数 不等 .\n");
                             textProcess.setText(sb);
                             textProcess.setTextColor(getResources().getColor(R.color.red, null));
                         }
                     }
                 }
                 if ("".contentEquals(textProcess.getText())) {
-                    String iProcess = "工序 " + i + " 未录入. ";
+                    String iProcess = "工序 " + i + " 未录入.\n";
                     textProcess.setText(iProcess);
                     textProcess.setTextColor(getResources().getColor(R.color.red, null));
                 }
@@ -123,6 +124,62 @@ public class CheckSalaryActivity extends AppCompatActivity {
         int styleSalary = 0;
         int processSalary = 0;
         int circuitSalary = 0;
+
+        for (EntityStyle entityStyle : styleList) {
+            // 写款式名
+            TextView textStyle = new TextView(this);
+            textStyle.setTextSize(16);
+            layoutSalary.addView(textStyle);
+            textStyle.setText(entityStyle.getStyle());
+            textStyle.setGravity(Gravity.CENTER);
+            textStyle.getPaint().setFakeBoldText(true);
+            for (int i = 1; i <= entityStyle.getProcessNumber(); ++i) {
+                // 写工序号
+                TextView textProcess = new TextView(this);
+                textProcess.setTextSize(16);
+                layoutSalary.addView(textProcess);
+                textProcess.setText("工序 " + i + " .\n");
+                int processCount = 0;
+                for (EntityCircuit entityCircuit : circuitList) {
+                    if (entityCircuit.getStyle().equals(entityStyle.getStyle()) &&
+                            entityCircuit.getProcessID() == i) {
+                        processCount += entityCircuit.getNumber();
+                    }
+                }
+                TextView textProcessNumber = new TextView(this);
+                layoutSalary.addView(textProcessNumber);
+                StringBuilder sbProcessNumber = new StringBuilder();
+                int processNumber = getProcessNumber(entityStyle.getStyle(), i);
+                if (processNumber != -1 && processNumber == processCount) {
+                    sbProcessNumber.append("完成件数与工序件数 相等 .");
+                    textProcessNumber.setText(sbProcessNumber);
+                } else if (processNumber != -1 && processNumber != processCount) {
+                    sbProcessNumber.append("完成件数与工序件数 不等 .\n").append("工序件数 = ")
+                            .append(processNumber).append("\t 完成件数 = ")
+                            .append(processCount).append("\n");
+                    textProcessNumber.setText(sbProcessNumber);
+                    textProcessNumber.setTextColor(getResources().getColor(R.color.red, null));
+                } else if (processNumber == -1) {
+                    sbProcessNumber.append(" 该工序未录入.");
+                    textProcessNumber.setText(sbProcessNumber);
+                    textProcessNumber.setTextColor(getResources().getColor(R.color.red, null));
+                }
+                TextView textStyleNumber = new TextView(this);
+                layoutSalary.addView(textStyleNumber);
+                StringBuilder sbStyleNumber = new StringBuilder();
+                if (processCount == entityStyle.getNumber()) {
+                    sbStyleNumber.append(" 完成件数与款式件数 相等 .\n");
+                    textStyleNumber.setText(sbStyleNumber);
+                } else {
+                    sbStyleNumber.append(" 完成件数与款式件数 不等 .\n").append("款式件数 = ")
+                            .append(entityStyle.getNumber()).append("\t 完成件数 = ")
+                            .append(processCount).append("\n");
+                    textStyleNumber.setText(sbStyleNumber);
+                    textStyleNumber.setTextColor(getResources().getColor(R.color.red, null));
+                }
+            }
+        }
+
         for (EntityStyle entityStyle : styleList) {
             styleSalary += entityStyle.getNumber() * entityStyle.getStylePrice();
             Log.d(TAG, "checkSalary: getNumber " + entityStyle.getNumber() + " getStylePrice " + entityStyle.getStylePrice());
@@ -155,6 +212,15 @@ public class CheckSalaryActivity extends AppCompatActivity {
         for (EntityProcess entityProcess : processList) {
             if (entityProcess.getStyle().equals(style) && entityProcess.getProcessID() == processID)
                 return entityProcess.getProcessPrice();
+        }
+        return -1;
+    }
+
+    private int getProcessNumber(String style, int processID) {
+        List<EntityProcess> processList = salaryDao.getProcessList();
+        for (EntityProcess entityProcess : processList) {
+            if (entityProcess.getStyle().equals(style) && entityProcess.getProcessID() == processID)
+                return entityProcess.getNumber();
         }
         return -1;
     }

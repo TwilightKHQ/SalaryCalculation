@@ -50,27 +50,24 @@ public class SalaryProvider extends BaseNodeProvider {
     public boolean onLongClick(@NonNull BaseViewHolder helper, @NonNull View view,
                                BaseNode data, int position) {
         String name = "";
-        int nodeSize = 0;
-
         SalaryNode salaryNode = (SalaryNode) data;
         AdapterSalaryNodeTree adapter = (AdapterSalaryNodeTree) getAdapter();
         if (adapter != null) {
             int parentPosition = adapter.findParentNode(data);
             BaseNode parentNode = (BaseNode) adapter.getData().get(parentPosition);
             if (parentNode instanceof TitleNode) {
-                Log.d(TAG, "onLongClick: TitleNode");
                 TitleNode titleNode = (TitleNode) parentNode;
                 name = titleNode.getTitle();
-                nodeSize = titleNode.getChildNodeSize();
             } else if (parentNode instanceof EmployeeNode) {
-                Log.d(TAG, "onLongClick: EmployeeNode");
                 EmployeeNode employeeNode = (EmployeeNode) parentNode;
                 name = employeeNode.getTitle();
-                nodeSize = employeeNode.getChildNodeSize();
             }
-            if (position - parentPosition <= 1
-                    || position - parentPosition == nodeSize)
+
+            try {
+                Integer.parseInt(salaryNode.getNumber());
+            } catch (NumberFormatException e) {
                 return super.onLongClick(helper, view, data, position);
+            }
 
             String finalName = name;
             new XPopup.Builder(getContext())

@@ -206,6 +206,7 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
                 editNumber.setText(oldStyle.getNumber() + "");
                 editProcessNumber.setText(oldStyle.getProcessNumber() + "");
                 editStylePrice.setText(SomeUtils.priceToShow(oldStyle.getStylePrice() + ""));
+                editStyle.setSelection(editStyle.getText().length());
             }
         }
     }

@@ -109,16 +109,16 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                judgeButton();
                 styleSelected(position);
+                judgeButton();
             }
         });
         spinnerProcessID.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                judgeButton();
                 editNumber.setText(numbers.get(spinnerStyle.getSelectedIndex() - 1));
                 editNumber.setSelection(editNumber.getText().length());
+                judgeButton();
             }
         });
         editProcessPrice.addTextChangedListener(new TextWatcher() {
@@ -238,6 +238,7 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
                     spinnerProcessID.setSelectedIndex(Integer.parseInt(oldProcessID));
                     editNumber.setText(oldProcess.getNumber() + "");
                     editProcessPrice.setText(SomeUtils.priceToShow(oldProcess.getProcessPrice()));
+                    editProcessPrice.setSelection(editProcessPrice.getText().length());
                 }
             }
         }

@@ -94,8 +94,9 @@ public class FragmentAddEmployee extends Fragment implements View.OnClickListene
                 && mSharedPreferences.getInt("type", -1) == 0) {
             button.setText(R.string.change);
             String oldName = mSharedPreferences.getString("oldName", "");
-            editEmployee.setText(oldName);
             oldEmployee = new EntityEmployee(oldName);
+            editEmployee.setText(oldName);
+            editEmployee.setSelection(editEmployee.getText().length());
         }
     }
 

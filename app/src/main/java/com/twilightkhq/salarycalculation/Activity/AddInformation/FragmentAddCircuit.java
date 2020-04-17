@@ -103,15 +103,15 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
         spinnerEmployee.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                judgeButton();
                 employeeSelected(position);
+                judgeButton();
             }
         });
         spinnerStyle.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
             public void onItemSelected(NiceSpinner niceSpinner, View view, int position, long l) {
-                judgeButton();
                 styleSelected(position);
+                judgeButton();
             }
         });
         spinnerProcessID.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
@@ -209,6 +209,7 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
                         styleSelected(stylePosition);
                         spinnerProcessID.setSelectedIndex(Integer.parseInt(oldProcessID));
                         editNumber.setText(oldCircuit.getNumber() + "");
+                        editNumber.setSelection(editNumber.getText().length());
                     }
                 }
             }
