@@ -5,6 +5,7 @@
     <string name="add_information">添加信息</string>
     <string name="salary_list">工资列表</string>
     <string name="check_salary">检查工资</string>
+    <string name="int_out">导入导出</string>
 
     <string name="employee">员工</string>
     <string name="style">款式</string>
@@ -30,5 +31,8 @@
     <string name="new_process">添加工序</string>
     <string name="hint_process_price">请输入该工序的单价</string>
     <string name="new_circuit">添加流程</string>
+
+    <string name="import_salary">导入工资</string>
+    <string name="export_salary">导出工资</string>
 
 </resources>

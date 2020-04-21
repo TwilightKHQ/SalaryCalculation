@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.Activity.ImportExportActivity;
 import com.twilightkhq.salarycalculation.Activity.InformationList.InformationListActivity;
 import com.twilightkhq.salarycalculation.Activity.SalaryList.SalaryListActivity;
 import com.twilightkhq.salarycalculation.Activity.CheckSalaryActivity;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btSalaryList.setOnClickListener(this);
         Button btCheckSalary = (Button) findViewById(R.id.check_salary);
         btCheckSalary.setOnClickListener(this);
+        Button btImportExport = (Button) findViewById(R.id.input_output);
+        btImportExport.setOnClickListener(this);
     }
 
     @Override
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.salary_list:
                 startActivity(new Intent(MainActivity.this, SalaryListActivity.class));
+                break;
+            case R.id.input_output:
+                startActivity(new Intent(MainActivity.this, ImportExportActivity.class));
                 break;
         }
     }

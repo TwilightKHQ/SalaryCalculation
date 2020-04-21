@@ -25,11 +25,11 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-
     <ImageView
         android:id="@+id/iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center"
         android:src="@mipmap/arrow_r" />
+
 </LinearLayout>

@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_40"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_40"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/btn_half_circle"
         android:text="@string/information_list"
         android:textSize="18sp" />
@@ -26,9 +26,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_40"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_40"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/btn_half_circle"
         android:text="@string/add_information"
         android:textSize="18sp" />
@@ -38,9 +38,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_40"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_40"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/btn_half_circle"
         android:text="@string/check_salary"
         android:textSize="18sp" />
@@ -50,11 +50,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_40"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/dp_40"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/btn_half_circle"
         android:text="@string/salary_list"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/input_output"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_half_circle"
+        android:text="@string/int_out"
         android:textSize="18sp" />
 
 </LinearLayout>
