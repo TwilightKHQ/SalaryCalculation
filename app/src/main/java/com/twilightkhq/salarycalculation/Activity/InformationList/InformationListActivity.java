@@ -1,10 +1,10 @@
 package com.twilightkhq.salarycalculation.Activity.InformationList;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 import com.twilightkhq.salarycalculation.Adapter.AdapterFragment;
@@ -24,8 +24,8 @@ public class InformationListActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
 
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> titleList = new ArrayList<>();

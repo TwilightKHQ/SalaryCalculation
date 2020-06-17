@@ -2,16 +2,15 @@ package com.twilightkhq.salarycalculation.Activity.InformationList;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
@@ -46,7 +45,7 @@ public class FragmentEmployee extends Fragment {
         View view = inflater.inflate(R.layout.fragment_employee, container, false);
 
         initData();
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
+        ListView listView = view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, names);
         listView.setAdapter(adapter);

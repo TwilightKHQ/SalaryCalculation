@@ -52,7 +52,7 @@ public class FragmentStyleSalary extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_style_salary, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 

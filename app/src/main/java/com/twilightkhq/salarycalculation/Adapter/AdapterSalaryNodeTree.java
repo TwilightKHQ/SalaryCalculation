@@ -3,11 +3,9 @@ package com.twilightkhq.salarycalculation.Adapter;
 import com.chad.library.adapter.base.BaseNodeAdapter;
 import com.chad.library.adapter.base.entity.node.BaseNode;
 import com.twilightkhq.salarycalculation.Entity.Node.EmployeeNode;
-import com.twilightkhq.salarycalculation.Entity.Node.ProcessNode;
 import com.twilightkhq.salarycalculation.Entity.Node.SalaryNode;
 import com.twilightkhq.salarycalculation.Entity.Node.TitleNode;
 import com.twilightkhq.salarycalculation.Provider.EmployeeTitleProvider;
-import com.twilightkhq.salarycalculation.Provider.ProcessProvider;
 import com.twilightkhq.salarycalculation.Provider.SalaryProvider;
 import com.twilightkhq.salarycalculation.Provider.StyleTitleProvider;
 

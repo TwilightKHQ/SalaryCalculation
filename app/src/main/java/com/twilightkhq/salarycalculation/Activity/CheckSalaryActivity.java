@@ -49,11 +49,11 @@ public class CheckSalaryActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        layoutStyle = (LinearLayout) findViewById(R.id.layout_style);
+        layoutStyle = findViewById(R.id.layout_style);
         checkStylePrice();
-        layoutProcess = (LinearLayout) findViewById(R.id.layout_process);
+        layoutProcess = findViewById(R.id.layout_process);
         checkProcess();
-        layoutSalary = (LinearLayout) findViewById(R.id.layout_salary);
+        layoutSalary = findViewById(R.id.layout_salary);
         checkSalary();
     }
 

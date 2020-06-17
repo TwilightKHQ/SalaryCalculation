@@ -93,13 +93,13 @@ public class FragmentAddProcess extends Fragment implements View.OnClickListener
     }
 
     private void initView(View view) {
-        spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
-        spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
-        layoutChooseProcess = (LinearLayout) view.findViewById(R.id.layout_choose_process);
-        editNumber = (EditText) view.findViewById(R.id.edit_number);
-        editProcessPrice = (EditText) view.findViewById(R.id.edit_process_price);
+        spinnerStyle = view.findViewById(R.id.spinner_style);
+        spinnerProcessID = view.findViewById(R.id.spinner_process_id);
+        layoutChooseProcess = view.findViewById(R.id.layout_choose_process);
+        editNumber = view.findViewById(R.id.edit_number);
+        editProcessPrice = view.findViewById(R.id.edit_process_price);
 
-        button = (Button) view.findViewById(R.id.bt_change);
+        button = view.findViewById(R.id.bt_change);
         button.setOnClickListener(this);
 
         spinnerStyle.attachDataSource(styles);

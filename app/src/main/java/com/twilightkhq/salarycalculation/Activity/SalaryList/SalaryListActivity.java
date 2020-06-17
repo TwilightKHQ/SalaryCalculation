@@ -24,8 +24,8 @@ public class SalaryListActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
 
         List<Fragment> fragmentList = new ArrayList<>();
         List<String> titleList = new ArrayList<>();

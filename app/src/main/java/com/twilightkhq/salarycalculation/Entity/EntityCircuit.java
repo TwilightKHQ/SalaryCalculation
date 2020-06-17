@@ -1,7 +1,5 @@
 package com.twilightkhq.salarycalculation.Entity;
 
-import androidx.annotation.NonNull;
-
 public class EntityCircuit {
 
     private String name;

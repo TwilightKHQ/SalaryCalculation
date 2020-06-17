@@ -63,10 +63,10 @@ public class FragmentAddEmployee extends Fragment implements View.OnClickListene
     }
 
     private void initView(View view) {
-        button = (Button) view.findViewById(R.id.bt_change);
+        button = view.findViewById(R.id.bt_change);
         button.setOnClickListener(this);
 
-        editEmployee = (EditText) view.findViewById(R.id.edit_employee);
+        editEmployee = view.findViewById(R.id.edit_employee);
         editEmployee.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

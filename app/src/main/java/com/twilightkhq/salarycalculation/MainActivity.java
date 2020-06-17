@@ -27,15 +27,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addClickListener() {
-        Button btInformationList = (Button) findViewById(R.id.information_list);
+        Button btInformationList = findViewById(R.id.information_list);
         btInformationList.setOnClickListener(this);
-        Button btAddInformation = (Button) findViewById(R.id.add_information);
+        Button btAddInformation = findViewById(R.id.add_information);
         btAddInformation.setOnClickListener(this);
-        Button btSalaryList = (Button) findViewById(R.id.salary_list);
+        Button btSalaryList = findViewById(R.id.salary_list);
         btSalaryList.setOnClickListener(this);
-        Button btCheckSalary = (Button) findViewById(R.id.check_salary);
+        Button btCheckSalary = findViewById(R.id.check_salary);
         btCheckSalary.setOnClickListener(this);
-        Button btImportExport = (Button) findViewById(R.id.input_output);
+        Button btImportExport = findViewById(R.id.input_output);
         btImportExport.setOnClickListener(this);
     }
 

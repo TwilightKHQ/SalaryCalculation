@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,13 +71,13 @@ public class FragmentAddStyle extends Fragment implements View.OnClickListener {
     }
 
     private void initView(View view) {
-        button = (Button) view.findViewById(R.id.bt_change);
+        button = view.findViewById(R.id.bt_change);
         button.setOnClickListener(this);
 
-        editStyle = (EditText) view.findViewById(R.id.edit_style);
-        editNumber = (EditText) view.findViewById(R.id.edit_number);
-        editStylePrice = (EditText) view.findViewById(R.id.edit_style_price);
-        editProcessNumber = (EditText) view.findViewById(R.id.edit_process_number);
+        editStyle = view.findViewById(R.id.edit_style);
+        editNumber = view.findViewById(R.id.edit_number);
+        editStylePrice = view.findViewById(R.id.edit_style_price);
+        editProcessNumber = view.findViewById(R.id.edit_process_number);
         editStyle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

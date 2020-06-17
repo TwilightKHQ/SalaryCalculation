@@ -89,14 +89,14 @@ public class FragmentAddCircuit extends Fragment implements View.OnClickListener
     }
 
     private void initView(View view) {
-        spinnerEmployee = (NiceSpinner) view.findViewById(R.id.spinner_employee);
-        layoutChooseStyle = (LinearLayout) view.findViewById(R.id.layout_choose_style);
-        spinnerStyle = (NiceSpinner) view.findViewById(R.id.spinner_style);
-        layoutChooseProcess = (LinearLayout) view.findViewById(R.id.layout_choose_process);
-        spinnerProcessID = (NiceSpinner) view.findViewById(R.id.spinner_process_id);
-        editNumber = (EditText) view.findViewById(R.id.edit_number);
+        spinnerEmployee = view.findViewById(R.id.spinner_employee);
+        layoutChooseStyle = view.findViewById(R.id.layout_choose_style);
+        spinnerStyle = view.findViewById(R.id.spinner_style);
+        layoutChooseProcess = view.findViewById(R.id.layout_choose_process);
+        spinnerProcessID = view.findViewById(R.id.spinner_process_id);
+        editNumber = view.findViewById(R.id.edit_number);
 
-        button = (Button) view.findViewById(R.id.bt_change);
+        button = view.findViewById(R.id.bt_change);
         button.setOnClickListener(this);
 
         spinnerEmployee.attachDataSource(names);

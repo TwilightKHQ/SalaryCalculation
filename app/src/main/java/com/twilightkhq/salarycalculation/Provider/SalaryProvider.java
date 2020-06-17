@@ -3,7 +3,6 @@ package com.twilightkhq.salarycalculation.Provider;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -12,8 +11,8 @@ import com.chad.library.adapter.base.provider.BaseNodeProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.OnSelectListener;
-import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryNodeTree;
 import com.twilightkhq.salarycalculation.Activity.AddInformation.AddInformationActivity;
+import com.twilightkhq.salarycalculation.Adapter.AdapterSalaryNodeTree;
 import com.twilightkhq.salarycalculation.Datebase.SalaryDao;
 import com.twilightkhq.salarycalculation.Entity.EntityCircuit;
 import com.twilightkhq.salarycalculation.Entity.Node.EmployeeNode;
